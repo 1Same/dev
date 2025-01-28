@@ -1,0 +1,16 @@
+export default Typography = {
+    LatoBold: "Lato-Bold",
+    LatoHeavy: "Lato-Heavy",
+    LatoRegular: "Lato-Regular",
+    LatoMedium: "Lato-Medium",
+    NunitoBold: "Nunito-Bold",
+    OpenSansRegular: "OpenSans-Regular",
+    OpenSansBold: "OpenSans-Bold",
+    poppinsMedium: 'Poppins-Medium',
+    poppinsRegular: 'Poppins-Regular',
+    poppinsSemiBold: 'Poppins-SemiBold',
+    poppinsBold: 'Poppins-Bold',
+    RobotoBold: 'Roboto-Bold',
+    RobotoMedium: 'Roboto-Medium',
+    RobotoRegular: 'Roboto-Regular',
+}
