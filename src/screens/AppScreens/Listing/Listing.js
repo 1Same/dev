@@ -11,7 +11,6 @@ import { instance } from "../../../utils";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { setCounrtyData } from "../../../features";
 
-
 const Listing = ({ navigation, route }) => {
 
     const [isLoading, setIsLoading] = useState(false);
@@ -268,6 +267,39 @@ const Listing = ({ navigation, route }) => {
         }
     }
 
+    const clickHeartIcon = (item) => {
+        setAddProductWishList(item._id)
+        if (!authData?.data?.slug) {
+            navigation.navigate('Login', { showmsg: 'yes' });
+            return '';
+        } else {
+            wishListIds?.includes(item?.slug) ? removeProdect(item.slug) : AddWishlistData(item.slug);
+        }
+    };
+
+    const getOffer = () => (
+            item?.tag_status == 1 ?
+                < Icon style={styles.offerFlowerIcon} source={
+                    item?.tag_key == Strings.detail.freeShiping ?
+                        ImagePath.Other.freeShiping
+                        :
+                        item?.tag_key == Strings.detail.freeCake ?
+                            ImagePath.Other.freeCake
+                            :
+                            item?.tag_key == Strings.detail.freeChocolate ?
+                                ImagePath.Other.freeChocolate
+                                :
+                                item?.tag_key == Strings.detail.freeGlassVase ?
+                                    ImagePath.Other.freeGlassVase
+                                    :
+                                    item?.tag_key == Strings.detail.doubleTheFlowersFree ?
+                                        ImagePath.Other.doubleTheFlowersFree
+                                        :
+                                        null}
+                />
+                : item?.product_price_detail?.hot_offers === 1 ? <Icon style={styles.offerIcon} source={ImagePath.Other.offer} /> : null
+    )
+
     return (
         <SafeAreaView style={styles.container}>
             <NewHeader
@@ -292,12 +324,7 @@ const Listing = ({ navigation, route }) => {
                         return (
                             <ProductList
                                 onClickProduct={() => gotoScreen(item)}
-                                onClick={() => {
-                                    setAddProductWishList(item._id)
-                                    !authData?.data?.slug ?
-                                        navigation.navigate('Login', { showmsg: 'yes' })
-                                        : wishListIds?.includes(item?.slug) ? removeProdect(item.slug) : AddWishlistData(item.slug)
-                                }}
+                                onClick={() => clickHeartIcon(item)}
                                 productImage={{ uri: imageUrl?.image_path + item?.product_image }}
                                 productImageStyle={item.product_name ? styles.flowerIcon : styles.bannerFlowerIcon}
                                 productName={item?.product_name}
@@ -309,6 +336,7 @@ const Listing = ({ navigation, route }) => {
                                 delivery_frequency={item?.delivery_frequency}
                                 heartIcon={wishListIds?.includes(item?.slug) ? heartActiveIcon : ImagePath.Other.heartIcon}
                                 loader={item._id == addProductWishList && commonData.wishListLoader}
+                                offerIcon={getOffer(item)}
                             />
                         )
                     }}
