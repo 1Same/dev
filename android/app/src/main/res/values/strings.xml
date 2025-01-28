@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Bloom Flora</string>
+	<!-- <string name="facebook_app_id">260363059694083</string> -->
+	<string name="facebook_app_id">700473401541904</string>
+	<string name="fb_login_protocol_scheme">fb1234</string>
+	<!-- <string name="facebook_client_token">855e928e01024ef3835fd7190bbbaa49</string> -->
+	<string name="facebook_client_token">5bab8f696c487bcf6abebf6a71793379</string>
+</resources>

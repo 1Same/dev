@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "537894033049",
+    "project_id": "bloomflora-ec6f5",
+    "storage_bucket": "bloomflora-ec6f5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:537894033049:android:239447abf3bd0e44e60a08",
+        "android_client_info": {
+          "package_name": "com.bloomflora"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "537894033049-bm5a77sqnec69kb9u0lhauqmo1qb6380.apps.googleusercontent.com",
+          "client_type": 3,
+          "android_info": {
+            "package_name": "com.bloomflora",
+            "certificate_hash": "85487cbd6a91f3655b66c1a2b74e64885d2476f8"
+          }
+        },
+        {
+          "client_id": "537894033049-pkg4u70pk33l8bemggi2uk3rocblp3f3.apps.googleusercontent.com",
+          "client_type": 3,
+          "android_info": {
+            "package_name": "com.bloomflora",
+            "certificate_hash": "996037dd91c0dd53ad96f49ec0590b6a75fd6985"
+          }
+        },
+        {
+          "client_id": "537894033049-k2fcua7qm8440b4c6ead12tphneqh3i6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBqMqqhKW8BPkRgkb_G0YiLVgOtg20USs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "537894033049-k2fcua7qm8440b4c6ead12tphneqh3i6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,6 @@
+{
+    "editor.fontLigatures": true,
+    "workbench.colorCustomizations": {
+        "statusBar.background": "#ff006e"
+    }
+}
