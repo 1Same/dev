@@ -9,29 +9,20 @@ export default styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors.White,
     },
-    likeContainer: {
-        height: 40,
-        width: 40,
-        backgroundColor: Colors.White,
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 100,
-        alignSelf: "flex-end",
-        position: "absolute",
-        top: 12,
-        right: 12,
-        borderWidth: 1,
-        borderColor: Colors.Silver
-    },
     sheetContainer: {
         marginTop: 8,
         borderWidth: 0.5,
-        borderColor: Colors.Concord,
+        borderColor: Colors.Black,
         backgroundColor: Colors.White,
         height: 45,
         width: wp('94%'),
         flexDirection: "row",
         alignItems: "center",
+        borderRadius: 5
+    },
+    productName: {
+        fontSize: 17,
+        fontFamily: Typography.RobotoBold
     },
     dateView: {
         width: wp('31%'),
@@ -84,6 +75,108 @@ export default styles = StyleSheet.create({
         backgroundColor: Colors.GreyGoose,
         marginLeft: '3%',
     },
+    upgradeOptionView: {
+        borderWidth: 1, borderColor: Colors.Tana,
+        marginTop: 20, borderRadius: 10,
+        flexDirection: 'row',
+        marginHorizontal: 10,
+        minHeight: 80
+    },
+    upgradeOptionContain: {
+        width: '37%',
+        borderRightWidth: 1,
+        borderColor: Colors.Tana,
+        backgroundColor: Colors.WhiteLinen,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 9,
+        paddingHorizontal: 10,
+
+    },
+    glassVase: {
+        borderRadius: 10,
+        marginLeft: 15,
+        width: 36,
+        height: 21,
+        borderWidth: 0,
+        paddingHorizontal: 3
+
+    },
+    activeGlassVase: {
+        width: 14,
+        height: 14,
+        backgroundColor: Colors.White,
+        borderRadius: 10,
+    },
+    commonSheet: {
+        container: {
+            borderTopLeftRadius: 36,
+            borderTopRightRadius: 36,
+            height: 'auto',
+        },
+        wrapper: {
+            backgroundColor: "rgba(142, 142, 147, 0.42)"
+        },
+        draggableIcon: {
+            backgroundColor: Colors.Black
+        },
+        draggableIcon: {
+            backgroundColor: Colors.Black
+        }
+    },
+    flowerIcon: {
+        width: wp("44.1%"),
+        height: wp("44.1%"),
+        borderTopLeftRadius: 12.3,
+        borderTopRightRadius: 0,
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 12.3,
+    },
+    productBorder: {
+        padding: 0,
+        borderTopLeftRadius: 12,
+        borderTopRightRadius: 0,
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 12,
+        marginBottom: 1,
+        borderWidth: 0.8,
+        borderColor: Colors.Camel,
+        elevation: 0,
+        marginTop: 12,
+        backgroundColor: Colors.WhiteLinen
+    },
+    bottmBorder: {
+        height: 5,
+        width: 125,
+        backgroundColor: Colors.BarleyCorn,
+        alignSelf: 'center'
+    },
+    addonIcon: {
+        width: wp("39%"),
+        height: wp("39%"),
+        borderRadius: 0,
+        // margin:7
+    },
+    htmlCode: {
+        body: {
+            whiteSpace: 'normal',
+            color: 'gray'
+        },
+        ol: {
+            paddingLeft: 24,
+            paddingRight: 10,
+        },
+        li: {
+            marginBottom: 10,
+            color: 'black',
+        },
+        p: {
+            paddingHorizontal: 10,
+            marginVertical: 5,
+            lineHeight: 20,
+        }
+    },
 
     // Dropdwon container ---------
     dropdown: {
@@ -129,10 +222,9 @@ export default styles = StyleSheet.create({
     rowContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        marginTop: 15,
-        marginHorizontal: wp('1.4%'),
-        marginBottom: 7,
+        backgroundColor: Colors.WhiteLinen,
+        paddingVertical: 5,
+        paddingHorizontal: 15
     },
     inputTextContainer: {
         marginTop: 12,
@@ -165,12 +257,9 @@ export default styles = StyleSheet.create({
         height: 23
     },
     buttonMainCon: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
         backgroundColor: Colors.White,
         paddingHorizontal: 13,
-        paddingBottom: 25,
+        // paddingBottom: 25,
         height: 70,
         shadowColor: Colors.GreyGo,
         shadowOffset: {
@@ -180,23 +269,23 @@ export default styles = StyleSheet.create({
         shadowOpacity: 0.32,
         shadowRadius: 2,
         elevation: 15,
+        justifyContent: 'center'
     },
     bottonContainers: {
         backgroundColor: Colors.White,
-        borderWidth: 1,
-        borderColor: Colors.Silver,
         borderRadius: 2,
-        width: wp('45%'),
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 13,
         marginHorizontal: 0,
         height: 48,
+        marginTop: 0
     },
     buttonName: {
-        color: Colors.Black,
+        color: Colors.White,
+        marginLeft: 3,
         fontFamily: Typography.RobotoMedium,
-        fontSize: 14,
+        fontSize: 16,
         textAlign: 'center',
         lineHeight: 19
     },
@@ -213,6 +302,8 @@ export default styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: 10,
         height: 44,
+        borderTopLeftRadius: 6,
+        borderBottomLeftRadius: 6
     },
     dropdownName: {
         fontFamily: Typography.RobotoMedium,
@@ -235,9 +326,7 @@ export default styles = StyleSheet.create({
     ratingContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: Colors.Fantasy,
         paddingVertical: 4,
-        paddingHorizontal: 5,
         borderRadius: 2,
     },
     descriptionBorderSpacer: {
@@ -266,8 +355,8 @@ export default styles = StyleSheet.create({
     },
     upgradeStyle: {
         color: Colors.Black,
-        fontSize: 15.5,
-        fontFamily: Typography.RobotoMedium
+        fontSize: 17,
+        fontFamily: Typography.RobotoBold
     },
     calenderName: {
         color: Colors.Dune,
@@ -287,9 +376,9 @@ export default styles = StyleSheet.create({
         paddingHorizontal: 6,
     },
     descriptionHeading: {
-        fontSize: 14,
+        fontSize: 13.5,
         color: Colors.Black,
-        fontFamily: Typography.poppinsSemiBold
+        fontFamily: Typography.RobotoMedium
     },
     hitSlop: {
         top: 8, left: 8,
@@ -315,8 +404,14 @@ export default styles = StyleSheet.create({
         marginBottom: Platform.OS == 'ios' ? 15 : 15
     },
     sheetTitle: {
-        fontSize: Size.m011,
+        fontSize: 17,
         color: Colors.Black,
-        textAlign: 'center',
+        fontFamily: Typography.LatoBold
+    },
+    loadingMainContainer: {
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        height: "100%",
+        width: "100%",
+        position: "absolute"
     },
 });

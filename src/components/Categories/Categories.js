@@ -7,7 +7,7 @@ import ProgressiveImage from "../ProgressiveImage/ProgressiveImage";
 
 const Categories = (props) => {
 
-    const { image, title, bottomWidth, loding, bottomWidthLoading, rowWidthLoading, onPress } = props;
+    const { image, title, loding, bottomWidthLoading, rowWidthLoading, onPress, index = 0 } = props;
 
     return (
         <>
@@ -22,9 +22,9 @@ const Categories = (props) => {
                 :
                 <View style={{ flexDirection: 'row' }}>
                     <View>
-                        <TouchableOpacity onPress={onPress} style={{ alignItems: 'center', width: wp('23.2'), paddingVertical: 8, }} activeOpacity={0.7}>
+                        <TouchableOpacity onPress={onPress} style={{ alignItems: 'center', width: wp('23.2'), paddingTop: index > 4 ? 6 : 20, }} activeOpacity={0.7}>
                             <ProgressiveImage
-                                style={{ height: 39, width: 39 }}
+                                style={{ height: 45, width: 45 }}
                                 source={image}
                                 resizeMode="contain"
                             />
@@ -34,7 +34,7 @@ const Categories = (props) => {
                         </TouchableOpacity>
                         <View style={[styles.borderbottomwidth, { height: rowWidthLoading }]} />
                     </View>
-                    <View style={[styles.borderleftwidth, { width: bottomWidthLoading }]} />
+                    <View style={[styles.borderleftwidth, { width: bottomWidthLoading, marginTop: index > 4 ? 5 : 10, height: wp(index > 4 ? '14%' : '16%'), }]} />
                 </View>
             }
         </>
@@ -55,8 +55,8 @@ const styles = StyleSheet.create({
     },
     borderleftwidth: {
         width: 1,
-        height: wp('16%'),
+        height: wp('14%'),
         backgroundColor: Colors.CreamBrulee,
-        marginTop: 6
+        marginTop: 10
     }
 })

@@ -17,6 +17,7 @@ export { default as AddNewReminder } from './AppScreens/AddNewReminder/AddNewRem
 export { default as Detail } from './AppScreens/Detail/Detail'
 export { default as Listing } from './AppScreens/Listing/Listing'
 export { default as Home } from './AppScreens/Home/Home'
+export { default as ValentineDay } from './AppScreens/ValentineDay/ValentineDay'
 export { default as Landing } from './AppScreens/Landing/Landing'
 export { default as MyAccountMenu } from './AppScreens/MyAccountMenu/MyAccountMenu'
 export { default as AddGift } from './AppScreens/AddGift/AddGift'

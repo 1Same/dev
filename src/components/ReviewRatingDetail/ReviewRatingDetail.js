@@ -99,7 +99,7 @@ const ReviewRatingDetail = (props) => {
                     />
                     < TouchableOpacity style={{ marginBottom: 10 }} onPress={() => navigation.navigate('CustomerReviews', { productId: productId })} activeOpacity={0.7}>
                         {loadeMore?.isLoading == true ? <Loader loadStyle={styles.loader} size={'small'} /> :
-                            <Label style={{ fontSize: 14, color: Colors.Camel, textAlign: 'center', fontFamily: Typography.poppinsSemiBold }} text={'View More'} />}
+                            <Label style={{ fontSize: 15, color: Colors.WaterBlue, textAlign: 'center', fontFamily: Typography.poppinsSemiBold }} text={'View More'} />}
                     </TouchableOpacity>
                 </View>
             )}

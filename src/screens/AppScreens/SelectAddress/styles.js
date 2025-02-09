@@ -230,5 +230,11 @@ export default styles = StyleSheet.create({
         color: Colors.Camel,
         textAlign: 'center',
         fontFamily: Typography.poppinsSemiBold
+    },
+    hitSlop: {
+        top: 10,
+        bottom: 10,
+        left: 10,
+        right: 10
     }
 })

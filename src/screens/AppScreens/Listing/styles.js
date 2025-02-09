@@ -1,8 +1,7 @@
-import { Dimensions, Platform, StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { Size, Colors, Typography } from "../../../constants";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp, } from "react-native-responsive-screen";
 
-const { height, width } = Dimensions.get("window");
 
 export default styles = StyleSheet.create({
   container: {
@@ -10,19 +9,17 @@ export default styles = StyleSheet.create({
     backgroundColor: Colors.White,
   },
   oderTitle: {
-    fontSize: 17,
+    fontSize: 16,
     fontFamily: Typography.LatoBold,
+    lineHeight: 25
   },
   manView: {
     paddingHorizontal: wp("4%"),
     marginTop: 20,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
   },
   filterContainer: {
     position: "absolute",
-    bottom: height * 0.1,
+    bottom: 30,
     right: 15,
   },
   filterIcon: {
@@ -69,9 +66,9 @@ export default styles = StyleSheet.create({
     marginLeft: wp("3.1%"),
   },
   flowerIcon: {
-    borderRadius: 5,
+    borderRadius: 7,
     width: wp("41.5%"),
-    height: wp("40.8%"),
+    height: wp("41.5%"),
   },
   bannerFlowerIcon: {
     height: wp("70.3%"),
@@ -131,10 +128,10 @@ export default styles = StyleSheet.create({
   },
   shortingPopup: {
     backgroundColor: Colors.White,
+    alignItems: "center",
     width: "50%",
     height: "15%",
     justifyContent: "center",
-    alignItems: "center",
     borderRadius: 10,
   },
   shortContainer: {
@@ -150,6 +147,29 @@ export default styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
     height: "100%",
     width: "100%",
-    position: "absolute"
+    position: "absolute",
+  },
+  htmlCode: {
+    body: {
+      whiteSpace: 'normal',
+      fontSize: 15,
+      // fontFamily: Typography.LatoBold,
+      lineHeight: 25,
+      color: Colors.Black,
+      fontWeight: 500
+    },
+    ol: {
+      paddingLeft: 24,
+      paddingRight: 10,
+    },
+    li: {
+      marginBottom: 10,
+      color: 'black',
+    },
+    p: {
+      paddingHorizontal: 10,
+      marginVertical: 5,
+      lineHeight: 20,
+    }
   },
 });

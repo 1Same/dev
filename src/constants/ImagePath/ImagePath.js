@@ -39,6 +39,7 @@ export default ImagePath = {
     Auth: {
         fbSign: require(BaseImagePath + 'Auth/facebook.png'),
         googleSign: require(BaseImagePath + 'Auth/google.png'),
+        googleIcon: require(BaseImagePath + 'Auth/googleIcon.png'),
         backArrow: require(BaseImagePath + 'Auth/backArrow.png'),
         rightMark: require(BaseImagePath + 'Auth/rightMark.png'),
         hidePassword: require(BaseImagePath + 'Auth/hidePassword.png'),
@@ -143,12 +144,25 @@ export default ImagePath = {
         paypal: require(BaseImagePath + 'Other/paypal.png'),
         ccavenue: require(BaseImagePath + 'Other/ccavenue.png'),
         razorpay: require(BaseImagePath + 'Other/razorpay.png'),
+        addon_icon: require(BaseImagePath + 'Other/addon_icon.png'),
+        shoppingCart: require(BaseImagePath + 'Other/shoppingCart.png'),
+        track_order_menu: require(BaseImagePath + 'Other/track_order_menu.png'),
+        customer_service_icon: require(BaseImagePath + 'Other/customer_service_icon.png'),
+        sort: require(BaseImagePath + 'Other/sort.png'),
     },
     webIcons: {
+        left_arrowNew: require('../../assets/Images/WebpIcon/left-arrowNew.png'),
+        left_arrow: require('../../assets/Images/WebpIcon/left-arrow.png'),
+        classic_icon: require('../../assets/Images/WebpIcon/classic_icon.png'),
+        deluxe_icon: require('../../assets/Images/WebpIcon/deluxe_icon.png'),
+        premium_icon: require('../../assets/Images/WebpIcon/premium_icon.png'),
         attachments: require('../../assets/Images/WebpIcon/attachments.png'),
+        cart: require('../../assets/Images/WebpIcon/cart.png'),
         weddingflowersuae: require('../../assets/Images/WebpIcon/wedding-flowers-uae.jpg'),
         newarrivalgifthampers: require('../../assets/Images/WebpIcon/new-arrival-gift-hampers.jpg'),
         weddingmobile: require('../../assets/Images/WebpIcon/wedding-mobile.webp'),
+        message_card_icon: require('../../assets/Images/WebpIcon/message_card_icon.webp'),
+        empty_user: require('../../assets/Images/WebpIcon/empty_user.webp'),
 
     }
 }

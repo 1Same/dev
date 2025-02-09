@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { FlatList, Modal, SafeAreaView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Alert, Dimensions, FlatList, Image, Modal, SafeAreaView, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { AlertError, BottomSheet, Loader, NewHeader, ProductList, ReviewRating, ToastError, ToastSuccess } from "../../../components";
 import styles from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -10,9 +10,11 @@ import { isEmptyObj } from "../../../lib";
 import { instance } from "../../../utils";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { setCounrtyData } from "../../../features";
+import RenderHtml from 'react-native-render-html';
 
 const Listing = ({ navigation, route }) => {
 
+    const { width } = Dimensions.get('window')
     const [isLoading, setIsLoading] = useState(false);
     const [commonData, setCommonData] = useState({ sortData: false, openLocationPopup: false, wishListLoader: false });
     const [sortValue, setSortValue] = useState("");
@@ -50,7 +52,7 @@ const Listing = ({ navigation, route }) => {
 
     // sort type array
     const sortAllData = [
-        { value: 'Popularity', id: 5, sort: 'popularity', 'icon': ImagePath.Other.singleStar, },
+        { value: 'Recommended', id: 5, sort: '', 'icon': ImagePath.Other.singleStar, },
         { value: 'Low to High', id: 6, sort: 'low_to_high', 'icon': ImagePath.Other.upArrow, 'color': Colors.Red },
         { value: 'High to Low', id: 7, sort: 'high_to_low', 'icon': ImagePath.Other.downArrow, 'color': Colors.Green },
     ];
@@ -107,8 +109,7 @@ const Listing = ({ navigation, route }) => {
 
             }).then(async (response) => {
                 const userData = JSON.parse(response.data);
-                if (userData.status === 'success') {
-
+                if (userData?.status === 'success') {
                     setProductListingData(userData);
                     if (userData?.total_page <= currentPage) {
                         setIsLoadMore(false);
@@ -193,14 +194,25 @@ const Listing = ({ navigation, route }) => {
                     <View>
                         {productListingData?.seo_content?.seo_title !== '' &&
                             <View style={styles.manView}>
-                                <View style={{ width: '82%' }}>
-                                    <Label style={styles.oderTitle} text={productListingData?.seo_content?.seo_title} />
-                                </View>
+                                {!!productListingData?.seo_content?.seo_title &&
+                                    <RenderHtml
+                                        contentWidth={width}
+                                        source={{ html: productListingData?.seo_content?.seo_title }}
+                                        tagsStyles={styles.htmlCode}
+                                    />}
+
+                                <TouchableOpacity
+                                    onPress={() => setCommonData({ ...commonData, sortData: true })}
+                                    hitSlop={styles.hitSlop} activeOpacity={0.7}
+                                    style={[styles.rowColumn, { alignSelf: 'flex-end' }]}
+                                >
+                                    <Icon style={{ width: 16.5, height: 16.5, transform: [{ rotateX: '180deg' }], marginRight: 2 }} source={ImagePath.Other.sort} />
+                                    <Label style={styles.oderTitle} text={'Sort By:'} />
+                                </TouchableOpacity>
                             </View>}
-                        <Spacer style={{ marginTop: 10 }} />
                     </View>
                     :
-                    !isLoading && <View style={{ height: hp('38%'), justifyContent: "center", alignItems: "center" }}>
+                    !isLoading && <View style={{ height: hp('45%'), justifyContent: "center", alignItems: "center" }}>
                         <Label style={{}} text={"No Products Found."} />
                     </View>
                 }
@@ -277,27 +289,29 @@ const Listing = ({ navigation, route }) => {
         }
     };
 
-    const getOffer = () => (
-            item?.tag_status == 1 ?
-                < Icon style={styles.offerFlowerIcon} source={
-                    item?.tag_key == Strings.detail.freeShiping ?
-                        ImagePath.Other.freeShiping
+    const getOffer = (item) => (
+        item?.tag_status == 1 ?
+            < Icon style={styles.offerFlowerIcon} source={
+                item?.tag_key == Strings.detail.freeShiping ?
+                    ImagePath.Other.freeShiping
+                    :
+                    item?.tag_key == Strings.detail.freeCake ?
+                        ImagePath.Other.freeCake
                         :
-                        item?.tag_key == Strings.detail.freeCake ?
-                            ImagePath.Other.freeCake
+                        item?.tag_key == Strings.detail.freeChocolate ?
+                            ImagePath.Other.freeChocolate
                             :
-                            item?.tag_key == Strings.detail.freeChocolate ?
-                                ImagePath.Other.freeChocolate
+                            item?.tag_key == Strings.detail.freeGlassVase ?
+                                ImagePath.Other.freeGlassVase
                                 :
-                                item?.tag_key == Strings.detail.freeGlassVase ?
-                                    ImagePath.Other.freeGlassVase
+                                item?.tag_key == Strings.detail.doubleTheFlowersFree ?
+                                    ImagePath.Other.doubleTheFlowersFree
                                     :
-                                    item?.tag_key == Strings.detail.doubleTheFlowersFree ?
-                                        ImagePath.Other.doubleTheFlowersFree
-                                        :
-                                        null}
-                />
-                : item?.product_price_detail?.hot_offers === 1 ? <Icon style={styles.offerIcon} source={ImagePath.Other.offer} /> : null
+                                    null}
+            />
+            : item?.product_price_detail?.hot_offers === 1 ?
+                <Icon style={styles.offerIcon} source={ImagePath.Other.offer}
+                /> : null
     )
 
     return (
@@ -307,12 +321,10 @@ const Listing = ({ navigation, route }) => {
             />
 
             <View style={{ flex: 1 }}>
-                {/* product listing Flatlist */}
                 <FlatList
                     data={productData}
                     numColumns={2}
                     onEndReached={getProdectData}
-                    onEndReachedThreshold={0.5}
                     ListHeaderComponent={listingHeader}
                     ListFooterComponent={listingFooter}
                     keyboardDismissMode="on-drag"
@@ -329,8 +341,8 @@ const Listing = ({ navigation, route }) => {
                                 productImageStyle={item.product_name ? styles.flowerIcon : styles.bannerFlowerIcon}
                                 productName={item?.product_name}
                                 numberOfLines={1}
-                                productPrice={`${countryData?.country.currency_symbol} ${item.product_price_detail?.new_price + ' /' || '0'}`}
-                                oldPrice={`${countryData?.country.currency_symbol} ${item?.product_price_detail?.old_price ? item?.product_price_detail?.old_price : ''}`}
+                                productPrice={`${countryData?.country.currency_symbol} ${item.product_price_detail?.new_price || '0'}`}
+                                oldPrice={item?.product_price_detail?.hot_offers === 1 && `${countryData?.country.currency_symbol} ${item?.product_price_detail?.old_price ? item?.product_price_detail?.old_price : ''}`}
                                 rating_avg={item?.rating_avg}
                                 review_count={`(${item.review_count})`}
                                 delivery_frequency={item?.delivery_frequency}
@@ -342,13 +354,6 @@ const Listing = ({ navigation, route }) => {
                     }}
                 />
             </View>
-
-            {/* sortData button */}
-            {productData?.length > 0 &&
-                <TouchableOpacity onPress={() => setCommonData({ ...commonData, sortData: true })}
-                    activeOpacity={0.7} style={styles.filterContainer}>
-                    <Icon style={styles.filterIcon} source={ImagePath.Other.filterBlack} />
-                </TouchableOpacity>}
 
             {commonData.sortData ?
                 <Modal

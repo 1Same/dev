@@ -1,38 +1,47 @@
-import { StyleSheet, Dimensions } from "react-native"
+import { StyleSheet } from "react-native"
 import { Colors, Size, Typography } from "../../../constants"
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
- 
-const { width, height } = Dimensions.get('screen')
 
 export default styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         backgroundColor: Colors.White,
     },
+    cartMainView: {
+        borderWidth: 0.5,
+        borderColor: Colors.BorderColor,
+        borderTopLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        margin: 10
+    },
     arrow: {
         height: 20,
         width: 18,
     },
     cartIdContain: {
+        flexDirection: 'row',
         alignItems: "center",
         justifyContent: "center",
         borderTopRightRadius: 5,
         borderTopLeftRadius: 5,
-        paddingHorizontal: 12,
-        paddingVertical: 14,
-        top: 5,
-        paddingTop: 5
+        paddingHorizontal: 0,
+        paddingVertical: 4,
+    },
+    inputCouponCodeContiner: {
+        borderWidth: .8,
+        borderColor: Colors.FrenchGrey,
+        borderRadius: 5,
+        backgroundColor: Colors.White,
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: 40
     },
     cartItemContain: {
         backgroundColor: Colors.White,
-        marginHorizontal: 10,
-        borderWidth: .5,
-        borderColor: Colors.PaleSlate,
         paddingTop: 5,
         paddingHorizontal: Size.xm,
     },
-   
     deliveryDetailContain: {
         flexDirection: "row",
         alignItems: "center",
@@ -53,35 +62,41 @@ export default styles = StyleSheet.create({
         justifyContent: "space-between",
         marginTop: 5
     },
-   
     deliveryDetailText: {
-        fontSize: 15,
+        fontSize: 14.5,
         color: Colors.DuneLight
     },
-    
-    // coupon code style===
+    totalAmount: {
+        backgroundColor: Colors.WhiteLinen,
+        paddingHorizontal: 6,
+        paddingVertical: 8,
+        marginTop: 10
+    },
 
+    // coupon code style===
     applyContain: {
-        height: hp('5%'),
+        height: 40,
         backgroundColor: Colors.Secondary.Black,
         alignItems: "center",
         justifyContent: "center",
-        paddingHorizontal: wp('4%'),
+        paddingHorizontal: 25,
         borderRadius: 3,
+        marginTop: 0,
+        marginHorizontal: 0
     },
     borderContain: {
         marginTop: Size.xm2,
         height: .5,
         backgroundColor: Colors.MountainMist,
-        // marginHorizontal: Size.m011
     },
-  
+
     codeInput: {
         paddingLeft: wp('2%'),
-        fontSize: Size.m1,
+        fontSize: 14,
         fontFamily: Typography.LatoRegular,
         paddingVertical: hp('.8%'),
-        color: Colors.Black
+        color: Colors.Black,
+        flex: 1,
     },
     InputContiner: {
         borderWidth: .8,
@@ -117,11 +132,11 @@ export default styles = StyleSheet.create({
         marginTop: 13
     },
     couponCodeContainer: {
-        marginTop: hp('2%'),
-        marginHorizontal: wp('2.3%'),
+        paddingHorizontal: wp('3%'),
+        paddingVertical: 10,
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between"
+        backgroundColor: Colors.WhiteLinen
     },
     inputMainContainer: {
         marginTop: hp('3%'),
@@ -141,21 +156,32 @@ export default styles = StyleSheet.create({
         top: hp('.8%'),
         right: wp('-4.3%')
     },
- 
+    orderSummaryView: {
+        marginHorizontal: Size.xm2,
+        borderWidth: 1,
+        borderColor: Colors.Camel,
+        borderTopLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        paddingHorizontal: Size.xm2,
+        marginTop: 25
+    },
+    summaryBorder: {
+        borderWidth: 1.4, width: 90,
+        alignSelf: 'center', marginTop: 10,
+        borderColor: Colors.BorderColor,
+        backgroundColor: Colors.BorderColor
+    },
     //quantityButton 
     buttonContaine: {
         flexDirection: 'row',
         alignItems: "center",
-        backgroundColor: Colors.White,
-        width: wp('25'),
-        borderRadius: 6,
-        height: hp('4.5'),
         justifyContent: "space-evenly",
-        borderWidth: 1,
-        borderColor: Colors.QuillGrey,
+        borderWidth: 0.5,
+        borderColor: Colors.Black,
+        borderRadius: 9,
     },
     incrementButton: {
-        fontSize: 21,
+        fontSize: 18,
         color: Colors.Black,
         fontFamily: Typography.LatoBold
     },
@@ -165,19 +191,27 @@ export default styles = StyleSheet.create({
         left: Size.xm,
         right: Size.xm
     },
-    decrementView: {
-        backgroundColor: Colors.Black,
-        width: 11,
-        height: 2.5,
-        marginTop: 2
+    butonContainView: {
+        backgroundColor: Colors.WhiteLinen,
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 30,
+        width: 25
     },
-
+    decBorderRadius: {
+        borderTopLeftRadius: 9,
+        borderBottomLeftRadius: 9
+    },
+    incBordeRradius: {
+        borderTopRightRadius: 9,
+        borderBottomRightRadius: 9
+    },
     // cartEmpty
     cartEmptyarrow: {
         height: Size.x138,
         width: Size.x138,
     },
- 
+
     btnStyle: {
         marginTop: Size.x4l,
         borderRadius: Size.xxs,
@@ -199,7 +233,7 @@ export default styles = StyleSheet.create({
         marginTop: 15,
         backgroundColor: Colors.GreyGoose,
     },
-  
+
     productFeatureContainer: {
         flexDirection: "row",
         justifyContent: "space-around",
@@ -218,13 +252,16 @@ export default styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 10
     },
- 
+
     applyCouponContainer: {
         flexDirection: "row",
         alignItems: "center",
         marginTop: 22,
         marginHorizontal: 10,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        backgroundColor: Colors.Harp,
+        padding: 12,
+        borderRadius: 5
     },
     proceedToCheckContainer: {
         height: 125,
@@ -245,7 +282,24 @@ export default styles = StyleSheet.create({
         color: Colors.Red,
         fontSize: 13
     },
-  
+
+    // Message Cart
+    inputLength: {//
+        textAlign: 'right',
+        marginHorizontal: 21,
+        fontSize: 13,
+        fontFamily: Typography.LatoMedium
+    },
+    messageSubmit: {//
+        backgroundColor: Colors.Black,
+        paddingVertical: 10,
+        paddingHorizontal: 17,
+        borderRadius: 10,
+        alignSelf: 'flex-end',
+        marginHorizontal: 19,
+        marginTop: 15
+    }
+
 })
 
 //unUsage Css=============
@@ -254,6 +308,7 @@ export default styles = StyleSheet.create({
 //     marginHorizontal: 21,
 //     fontSize: 13
 // },
+
 // messageSubmit: {//
 //     backgroundColor: Colors.Black,
 //     paddingVertical: 10,

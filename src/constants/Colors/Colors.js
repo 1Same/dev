@@ -29,7 +29,8 @@ export default Colors = {
     SunsetOrange: "#FF5454",
     FerrariRed: "#FF1313",
     SmokeyGrey: "#707070",
-    Concord: "#7B7B7B",
+    // Concord: "#7B7B7B",
+    Concord: "#7F7C7A",
     BlackCow: "#484848",
     PickledBlue: "#344356",
     Red: "#E40000",
@@ -69,5 +70,14 @@ export default Colors = {
     Tana: '#D4DBC1',
     Zircon: '#F0F5FF',
     Alto: '#DBDBDB',
-    BlueRibbon: '#0d6efd'
+    BlueRibbon: '#0d6efd',
+    BarleyCorn: '#998658',
+    Seashell: '#F1F1F1',
+    Harp: '#E4F2E5',
+    Gallery: '#EBEBEB',
+    DoveGrayNew: '#6D6A6A',
+    Pizazz: '#ff9500',
+    Stiletto: '#a32e2e',
+    Cararra: '#EAEAE6',
+    MineShaft: '#222222'
 }

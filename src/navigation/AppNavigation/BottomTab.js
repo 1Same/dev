@@ -14,6 +14,7 @@ import {
     ShoppingCart,
     EditMyProfile,
     MyProfile,
+    ValentineDay,
 } from '../../screens';
 // import { navigationRef } from './AppNavigation';
 import { useFocusEffect, useIsFocused, } from "@react-navigation/native";
@@ -31,6 +32,7 @@ const HomeStack = ({ route }) => {
         <HomeTab.Navigator screenOptions={{ headerShown: false, }}>
             <HomeTab.Screen name="Home" component={countryData.country?.isFromLandingPage == false ? getComp(Home) : getComp(Landing)} />
             <HomeTab.Screen name="Landing" component={countryData.country?.isFromLandingPage == false ? getComp(Home) : getComp(Landing)} />
+            <HomeTab.Screen name="ValentineDay" component={getComp(ValentineDay)} />
             <HomeTab.Screen name="Listing" component={getComp(Listing)} initialParams={{ showmsg: 'yes' }} />
             <HomeTab.Screen name="Detail" component={getComp(Detail)} initialParams={{ showmsg: 'yes' }} />
         </HomeTab.Navigator>
@@ -148,7 +150,6 @@ const BottomTab = ({ navigation }) => {
 
     return (
         <Tab.Navigator
-            // initialRouteName="AccountStack"
             initialRouteName="HomeStack"
             screenOptions={{
                 tabBarActiveTintColor: '#e91e63',
@@ -166,9 +167,9 @@ const BottomTab = ({ navigation }) => {
                     tabBarLabel: () => null,
                     headerShown: false,
                     tabBarIcon: () => (
-                        < TouchableOpacity onPress={() => selectBottomTab('Home')} activeOpacity={0.9} >
-                            <Image style={{ tintColor: bottomValue == 'Home' || bottomValue == "Landing" ? null : Colors.Black }} source={bottomValue === 'Home' || bottomValue === "Landing" ? BottomIcon.homeBlack : BottomIcon.home} />
-                        </TouchableOpacity>
+                        // < TouchableOpacity onPress={() => selectBottomTab('Home')} activeOpacity={0.9} >
+                        <Image style={{ tintColor: bottomValue == 'Home' || bottomValue == "Landing" ? null : Colors.Black }} source={bottomValue === 'Home' || bottomValue === "Landing" ? BottomIcon.homeBlack : BottomIcon.home} />
+                        // </TouchableOpacity>
                     ),
                 }}
             />

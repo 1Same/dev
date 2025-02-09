@@ -11,10 +11,7 @@ const RowColumn = (props) => {
     const countryData = useSelector((state) => state.country);
     const {
         labelStyleOne,
-        titleOne, ratingIcon1,
-        ratingIconStyle1,
-        title2,
-        currencyIcon,
+        titleOne,
         Image,
         buttonName,
         ratingIconStyle,
@@ -25,7 +22,6 @@ const RowColumn = (props) => {
         button,
         labelStyle1,
         shapeIcon,
-        labelStyleView2,
         titleStyle,
         shapeIconView,
         title,
@@ -42,7 +38,7 @@ const RowColumn = (props) => {
         boderStyle,
         keyNew = Math.random(0, 1000),
         shapeIconStyle,
-        disabled,
+        disabled = false,
     } = props;
 
     return (
@@ -50,17 +46,15 @@ const RowColumn = (props) => {
             {(Image || label || shapeIcon) &&
                 < TouchableOpacity onPress={onClick}
                     style={[{ alignItems: 'center', flexDirection: 'row' }, touchableStyle]}
-                    activeOpacity={0.7} disabled={disabled} hitSlop={styles.hitSlop}>
+                    activeOpacity={0.9} disabled={disabled} hitSlop={styles.hitSlop}>
                     {Image && <View style={ImageStyle} >
                         {(Image?.countryFlag == 'countryFlag' || Image?.countryCode) ?
-                            < CountryFlag isoCode={Image?.countryCode ? Image?.countryCode?.toString() : countryData?.country?.country_iso_code?.toString()} size={22} />
+                            (Image?.countryCode || countryData?.country?.country_iso_code) && < CountryFlag isoCode={Image?.countryCode ? Image?.countryCode?.toString() : countryData?.country?.country_iso_code?.toString()} size={22} />
                             : <Icon style={[styles.icon, style]} source={Image} />
                         }
                     </View>}
                     {label &&
-                        <View style={[labelStyleView2, {}]}>
-                            <Label text={label} style={[styles.labelStyle2, labelStyle2]} />
-                        </View>
+                        <Label text={label} style={[styles.labelStyle2, labelStyle2]} />
                     }
                     {shapeIcon &&
                         <View style={[styles.ShapeIconContainer, shapeIconView]}>

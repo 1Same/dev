@@ -75,34 +75,19 @@ export default styles = StyleSheet.create({
     //     elevation: 9
     // },
     InputContiner: {
-
         borderWidth: .8,
         borderColor: Colors.FrenchGrey,
         flex: 0.990,
         height: hp('5%'),
-        // height:"65%",
-        // width:300,
         borderRadius: 5,
         backgroundColor: Colors.White,
-        // shadowColor: "#000",
-        // shadowOffset: {
-        //     width: 0,
-        //     height: 3,
-        // },
-        // shadowOpacity: 0.27,
-        // shadowRadius: 4.65,
-
-        // elevation: 6,
     },
     renderContainer: {
         marginVertical: hp('1%'),
-        // backgroundColor: "black",
         backgroundColor: Colors.White,
-        // borderRadius: 10,
         borderWidth: 1,
         borderColor: Colors.GreyGoose,
         paddingVertical: 18
-        // height: hp('28%'),
     },
     couponContainer: {
         height: hp('6.5%'),
@@ -113,7 +98,7 @@ export default styles = StyleSheet.create({
         backgroundColor: Colors.White,
         marginLeft: wp('3.5%'),
         borderRadius: 8,
-        justifyContent:'center'
+        justifyContent: 'center'
     },
     // couponContainer: {
     //     height: hp('6%'),

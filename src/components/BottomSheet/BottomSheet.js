@@ -144,43 +144,114 @@ const BottomSheet = (props) => {
 
     return (
         <SafeAreaView>
-            <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
-                {isLoading == true ?
-                    <SkeletonPlaceholder >
-                        <SkeletonPlaceholder.Item height={39} borderRadius={8} marginHorizontal={11} />
-                    </SkeletonPlaceholder>
-                    :
-                    (!openSheet != null && openSheet != false) &&
-                    <View style={styles.rowColumn}>
-                        <RowColumn
-                            onClick={() => refRBSheet.current.open()}
-                            style={styles.icon}
-                            Image={{ "countryFlag": 'countryFlag' }}
-                            boder
-                        />
+            {isLoading == true ?
+                <SkeletonPlaceholder >
+                    <SkeletonPlaceholder.Item height={39} borderRadius={8} marginHorizontal={11} />
+                </SkeletonPlaceholder>
+                :
+                (!openSheet != null && openSheet != false) &&
+                <View style={styles.rowColumn}>
+                    <RowColumn
+                        onClick={() => refRBSheet.current.open()}
+                        style={styles.icon}
+                        Image={{ "countryFlag": 'countryFlag' }}
+                        boder
+                    />
 
-                        <TouchableOpacity onPress={() => refRBSheet.current.open()}
-                            style={[styles.shapeIconView, { height: '100%' }]} activeOpacity={0.7}>
-                            <RowColumn
-                                style={styles.locationIcon}
-                                Image={ImagePath.Home.location}
-                                label={getCityName()}
-                                labelStyle2={{ fontSize: 12, fontFamily: Typography.LatoMedium }}
-                                disabled={true}
-                            />
-                            <Icon style={styles.shapeIcon} source={ImagePath.Home.shape} />
-                        </TouchableOpacity>
-                    </View>}
+                    <TouchableOpacity onPress={() => refRBSheet.current.open()}
+                        style={[styles.shapeIconView, { height: '100%' }]} activeOpacity={0.7}>
+                        <RowColumn
+                            style={styles.locationIcon}
+                            Image={ImagePath.Home.location}
+                            label={getCityName()}
+                            labelStyle2={{ fontSize: 12, fontFamily: Typography.LatoMedium }}
+                            disabled={true}
+                        />
+                        <Icon style={styles.shapeIcon} source={ImagePath.Home.shape} />
+                    </TouchableOpacity>
+                </View>}
+
+            <RBSheet
+                ref={refRBSheet}
+                closeOnDragDown={true}
+                closeOnPressMask={false}
+                animationType='fade'
+                height={height * 0.40}
+                customStyles={{
+                    wrapper: {
+                        backgroundColor: 'rgba(0,0,0,0.6)'
+                    },
+                    container: {
+                        borderTopLeftRadius: Size.l,
+                        borderTopRightRadius: Size.l
+                    },
+                    draggableIcon: {
+                        backgroundColor: "#fff"
+                    }
+                }}
+            >
+                <View style={styles.rbSheetContainer}>
+                    <TouchableOpacity onPress={() => refRBSheet.current.close()}
+                        style={{ width: '100%', alignItems: 'flex-end' }} hitSlop={styles.hitSlop}>
+                        <Icon style={styles.croseIcon} source={ImagePath.Home.crossPink} />
+                    </TouchableOpacity>
+
+                    <Label style={styles.topTitle} text={Strings.Home.selectD} />
+                    <View style={{ marginTop: Size.xs3 }}>
+                        <Label style={styles.productTitle} text={Strings.Home.selectaProductAvailability} />
+                    </View>
+
+                    <Spacer />
+
+                    <View style={styles.radioButtonContainer}>
+                        {selectCountry?.map((countryName, key) => {
+                            return (
+                                <View key={countryName}>
+                                    <RowColumn
+                                        onClick={() => { setChecked(key), setDeliveryData([]), setCityError(''), setSearchCtyOrCountry('') }}
+                                        touchableStyle={[styles.radioButtonView]}
+                                        style={styles.radioIcon}
+                                        labelStyle2={styles.radioTitle}
+                                        Image={checked == key ? ImagePath.Other.radioBlack : ImagePath.Other.unCheckRadioBtnWhite}
+                                        label={countryName}
+                                    />
+                                </View>
+                            )
+                        })}
+                    </View>
+
+                    <TouchableOpacity onPress={() => {
+                        refRBSheet2.current?.open()
+                        setSearchCtyOrCountry('')
+                        searchData('')
+                    }}
+                        style={styles.selectCountry} activeOpacity={0.6} >
+                        <Label style={styles.selectCountryTitle} text={
+                            checked === 0 ? deliveryData.city_name ?
+                                deliveryData.city_name : Strings.Other.selectCity : deliveryData.country_name ?
+                                deliveryData.country_name : Strings.Other.selectCountry
+                        } />
+                        <Icon style={styles.shapeIcon} source={ImagePath.Home.shape} />
+                    </TouchableOpacity>
+                    <Label style={{ fontSize: 12, color: Colors.Red }} text={cityError} />
+                    <Spacer style={styles.spacer} />
+                    <Button
+                        style={{ height: Size.x48, backgroundColor: Colors.Secondary.Black }}
+                        onPress={() => setLocation()}
+                        primaryButton
+                        title={Strings.Home.continueShopping}
+                    />
+                </View>
 
                 <RBSheet
-                    ref={refRBSheet}
+                    ref={refRBSheet2}
                     closeOnDragDown={true}
-                    closeOnPressMask={false}
-                    animationType='fade'
+                    closeOnPressMask={true}
                     height={height * 0.40}
                     customStyles={{
                         wrapper: {
-                            backgroundColor: 'rgba(0,0,0,0.6)'
+                            // backgroundColor: 'red',
+                            backgroundColor: 'rgba(0,0,0,0)'
                         },
                         container: {
                             borderTopLeftRadius: Size.l,
@@ -191,117 +262,42 @@ const BottomSheet = (props) => {
                         }
                     }}
                 >
-                    <View style={styles.rbSheetContainer}>
-                        <TouchableOpacity onPress={() => refRBSheet.current.close()}
-                            style={{ width: '100%', alignItems: 'flex-end' }} hitSlop={styles.hitSlop}>
-                            <Icon style={styles.croseIcon} source={ImagePath.Home.crossPink} />
-                        </TouchableOpacity>
+                    <SafeAreaView style={{ flex: 1 }}>
+                        {checked == 0 &&
+                            <View style={{ justifyContent: 'center', paddingHorizontal: 20, marginVertical: 5 }}>
+                                <Label style={{ fontSize: 20, fontFamily: Typography.LatoBold }} text={Strings.Other.allCities} />
+                            </View>}
 
-                        <Label style={styles.topTitle} text={Strings.Home.selectD} />
-                        <View style={{ marginTop: Size.xs3 }}>
-                            <Label style={styles.productTitle} text={Strings.Home.selectaProductAvailability} />
-                        </View>
-
-                        <Spacer />
-
-                        <View style={styles.radioButtonContainer}>
-                            {selectCountry?.map((countryName, key) => {
-                                return (
-                                    <View key={countryName}>
-                                        <RowColumn
-                                            onClick={() => { setChecked(key), setDeliveryData([]), setCityError(''), setSearchCtyOrCountry('') }}
-                                            touchableStyle={[styles.radioButtonView]}
-                                            style={styles.radioIcon}
-                                            labelStyle2={styles.radioTitle}
-                                            Image={checked == key ? ImagePath.Other.radioBlack : ImagePath.Other.unCheckRadioBtnWhite}
-                                            label={countryName}
-                                        />
-                                    </View>
-                                )
-                            })}
-                        </View>
-
-                        <TouchableOpacity onPress={() => {
-                            refRBSheet2.current?.open()
-                            setSearchCtyOrCountry('')
-                            searchData('')
-                        }}
-                            style={styles.selectCountry} activeOpacity={0.6} >
-                            <Label style={styles.selectCountryTitle} text={
-                                checked === 0 ? deliveryData.city_name ?
-                                    deliveryData.city_name : Strings.Other.selectCity : deliveryData.country_name ?
-                                    deliveryData.country_name : Strings.Other.selectCountry
-                            } />
-                            <Icon style={styles.shapeIcon} source={ImagePath.Home.shape} />
-                        </TouchableOpacity>
-                        <Label style={{ fontSize: 12, color: Colors.Red }} text={cityError} />
-                        <Spacer style={styles.spacer} />
-                        <Button
-                            style={{ height: Size.x48, backgroundColor: Colors.Secondary.Black }}
-                            onPress={() => setLocation()}
-                            primaryButton
-                            title={Strings.Home.continueShopping}
+                        <NewInputText
+                            containerStyle={{ height: 42, borderColor: Colors.Camel, marginTop: 5 }}
+                            placeholder={`Search Delivery ${checked === 0 ? 'City' : 'Country'}`}
+                            name="Search"
+                            value={searchCtyOrCountry}
+                            onChangeText={(text) => {
+                                setSearchCtyOrCountry(text);
+                                searchData(text);
+                            }}
                         />
-                    </View>
 
-                    <RBSheet
-                        ref={refRBSheet2}
-                        closeOnDragDown={true}
-                        closeOnPressMask={true}
-                        height={height * 0.40}
-                        customStyles={{
-                            wrapper: {
-                                backgroundColor: 'rgba(0,0,0,0)'
-                            },
-                            container: {
-                                borderTopLeftRadius: Size.l,
-                                borderTopRightRadius: Size.l
-                            },
-                            draggableIcon: {
-                                backgroundColor: "#fff"
-                            }
-                        }}
-                    >
-                        <SafeAreaView style={{ flex: 1 }}>
-                            {checked == 0 &&
-                                <View style={{ justifyContent: 'center', paddingHorizontal: 20, marginVertical: 5 }}>
-                                    <Label style={{ fontSize: 20, fontFamily: Typography.LatoBold }} text={Strings.Other.allCities} />
-                                </View>}
-
-                            <NewInputText
-                                containerStyle={{ height: 42, borderColor: Colors.Camel, marginTop: 5 }}
-                                placeholder={`Search Delivery ${checked === 0 ? 'City' : 'Country'}`}
-                                name="Search"
-                                value={searchCtyOrCountry}
-                                onChangeText={(text) => {
-                                    setSearchCtyOrCountry(text);
-                                    searchData(text);
+                        {(checked == 0 && locationData?.allCities?.length > 0) ?
+                            <FlatList
+                                data={showCityOrCountry?.allCities}
+                                showsVerticalScrollIndicator={false}
+                                ListFooterComponent={<Spacer />}
+                                renderItem={({ item }) => {
+                                    return (
+                                        < RowColumn
+                                            onClick={() => selectCountryFun(item)}
+                                            touchableStyle={[styles.selectCountryView, { marginLeft: 8 }]}
+                                            label={item?.city_name}
+                                        />
+                                    )
                                 }}
                             />
-                            {/* <Spacer style={styles.citiesTopBorder} /> */}
-
+                            :
                             <FlatList
                                 data={checked == 0 ? locationData.cityList : showCityOrCountry.countryList}
                                 showsVerticalScrollIndicator={false}
-                                ListFooterComponent={
-                                    (checked == 0 && locationData?.allCities?.length > 0) &&
-                                    <FlatList
-                                        data={showCityOrCountry?.allCities}
-                                        showsVerticalScrollIndicator={false}
-                                        scrollEnabled={false}
-                                        ListFooterComponent={<Spacer />}
-                                        renderItem={({ item }) => {
-                                            return (
-                                                < RowColumn
-                                                    onClick={() => selectCountryFun(item)}
-                                                    touchableStyle={[styles.selectCountryView, { marginLeft: 8 }]}
-                                                    // Image={(checked == 0 && item?.city_image) ? { uri: locationData?.image_url + item?.city_image } : ''}
-                                                    label={item?.city_name}
-                                                />
-                                            )
-                                        }}
-                                    />
-                                }
                                 renderItem={({ item, index }) => {
                                     let country = locationData.countryList?.length - 1 == index
                                     return (
@@ -318,10 +314,10 @@ const BottomSheet = (props) => {
                                     )
                                 }}
                             />
-                        </SafeAreaView>
-                    </RBSheet>
-                </RBSheet >
-            </KeyboardAwareScrollView>
+                        }
+                    </SafeAreaView>
+                </RBSheet>
+            </RBSheet >
         </SafeAreaView >
     )
 }

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Dimensions, FlatList, ImageBackground, SafeAreaView, ScrollView, TouchableOpacity, View } from 'react-native';
-import { AlertError, Baner, BottomSheet, Button, Categories, Loader, NewHeader, ProgressiveImage, ReviewRating, SliderData, ToastError } from "../../../components";
+import { AlertError, Baner, BottomSheet, Button, Categories, NewHeader, ProgressiveImage, ReviewRating, SliderData, ToastError } from "../../../components";
 import styles from "./styles";
 import { BoldLabel, Colors, Icon, ImagePath, Label, Strings, Typography } from "../../../constants";
 import { instance, setting } from "../../../utils";
@@ -13,7 +13,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Carousel from 'react-native-snap-carousel';
 
-const Home = ({ navigation, route }) => {
+const Home = ({ navigation }) => {
 
     const countryData = useSelector((state) => state.country);
     const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const Home = ({ navigation, route }) => {
     const [bottomCarouselIndex, setBottomCarouselIndex] = useState(1);
 
     useEffect(() => {
-        setIsLoading({ ...isLoading, isLoadMore: true })
+        setIsLoading({ ...isLoading, isLoadMore: true });
         getHomePageBlocks();
     }, [countryData?.country?.currency_symbol]);
 
@@ -190,11 +190,11 @@ const Home = ({ navigation, route }) => {
         isCarousel.snapToPrev();
     };
 
-    const ProductSlider = ({ heading, data, sliderData, style, clickOnCategory, loding = '' }) => {
+    const ProductSlider = ({ heading, data, sliderData, style, clickOnCategory, categoriesView, loding = '' }) => {
         return (
             <View style={[styles.productSliderMainView, style]}>
                 {heading && <Label style={styles.textHeading} text={heading} />}
-                <FlatList style={{ marginVertical: 30 }}
+                <FlatList style={[{ marginTop: 33 }, categoriesView]}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     horizontal
@@ -208,11 +208,10 @@ const Home = ({ navigation, route }) => {
                                 borderColor: sliderData?._id === item?._id ? 'transparent' : Colors.Black,
                             }]}
                             title={item.banner_text}
-                            labelStyle={{ color: sliderData?._id === item?._id ? Colors.White : Colors.Black }}
+                            labelStyle={{ color: sliderData?._id === item?._id ? Colors.White : Colors.Black, fontSize: 13, fontFamily: Typography.LatoMedium }}
                         />
                     )}
                 />
-
                 <SliderData
                     imageUrl={getPageBlocks?.product_image_path}
                     data={sliderData?.product_list ?? []}
@@ -256,6 +255,7 @@ const Home = ({ navigation, route }) => {
                                             title={item?.banner_text}
                                             bottomWidthLoading={index == 3 ? 0 : index == 7 ? 0 : 1}
                                             rowWidthLoading={index > 3 ? 0 : 1}
+                                            index={index + 1}
                                         />}
                                 </>
                             )
@@ -279,32 +279,43 @@ const Home = ({ navigation, route }) => {
                         {isLoading?.isLoading ?
                             <SkeletonPlaceholder>
                                 <SkeletonPlaceholder.Item
-                                    height={268}
-                                    width={width}
+                                    height={271}
+                                    width={width - 24}
+                                    marginHorizontal={'3%'}
+                                    borderTopLeftRadius={10}
+                                    borderBottomRightRadius={10}
                                     marginTop={19} />
                             </SkeletonPlaceholder>
                             :
                             getPageBlocks?.result?.page_blocks?.banner_images?.length > 0 &&
-                            <Swiper style={styles.swiperContainer}
+                            <Swiper
                                 autoplay
+                                autoplayTimeout={4}
                                 activeDotStyle={styles.activeDot}
                                 dotStyle={styles.dotStyle}
-                                dotColor={Colors.White}
-                                activeDotColor={'rgba(0,0,0,0.01)'}
                                 paginationStyle={{ marginBottom: -17 }}
+                                removeClippedSubviews={false}
                             >
                                 {getPageBlocks?.result?.page_blocks?.banner_images?.map((item, index) => {
                                     return (
-                                        <TouchableOpacity onPress={() => gotoScreen(item)} key={index} style={{}} activeOpacity={0.8}>
+                                        <TouchableOpacity style={{
+                                            width: '94%', height: '100%',
+                                            borderWidth: 0.5,
+                                            borderColor: Colors.Camel,
+                                            borderTopLeftRadius: 10,
+                                            borderBottomRightRadius: 10,
+                                            marginLeft: '3%'
+                                        }} onPress={() => gotoScreen(item)} key={index} activeOpacity={0.8}>
                                             <ProgressiveImage
                                                 style={styles.fristSwiper}
                                                 source={item?.mobile_image && { uri: getPageBlocks?.image_path + item?.mobile_image }}
-                                                resizeMode="contain"
+                                                resizeMode='stretch'
                                             />
                                         </TouchableOpacity>
                                     )
                                 })}
-                            </Swiper>}
+                            </Swiper>
+                        }
                     </View>
 
                     <View style={{ alignItems: "center", marginVertical: 20 }}>
@@ -370,13 +381,13 @@ const Home = ({ navigation, route }) => {
                             <Label style={styles.textHeading} text={getPageBlocks?.result?.page_blocks?.row_eight_title_one?.title} />}
 
                         {(getPageBlocks?.result?.page_blocks?.by_budget?.length > 0 && getPageBlocks?.image_path) &&
-                            <FlatList style={{ marginTop: 25 }}
+                            <FlatList style={{ marginTop: 25, marginBottom: 4 }}
                                 data={getPageBlocks?.result?.page_blocks?.by_budget}
                                 horizontal={true}
                                 showsHorizontalScrollIndicator={false}
                                 renderItem={({ item, index }) => (
                                     <TouchableOpacity onPress={() => gotoScreen(item)} activeOpacity={0.7}>
-                                        <Icon style={{ width: 170, height: 75 }} source={{ uri: getPageBlocks?.image_path + item?.mobile_image }} />
+                                        <Icon style={{ width: wp('40%'), height: wp('18%') }} source={{ uri: getPageBlocks?.image_path + item?.mobile_image }} />
                                     </TouchableOpacity>
                                 )}
                             />}
@@ -405,24 +416,26 @@ const Home = ({ navigation, route }) => {
                                 showsHorizontalScrollIndicator={false}
                                 renderItem={({ item, index }) => {
                                     return (
-                                        <View style={{}}>
+                                        <TouchableOpacity onPress={() => gotoScreen(item)} activeOpacity={0.7}>
                                             <Baner
-                                                onPress={() => gotoScreen(item)}
+                                                disabled={true}
                                                 isLoading={false}
                                                 style={[styles.shopByRecipient, { marginLeft: wp(index == 0 ? '3%' : '4%'), marginRight: wp(getPageBlocks?.result?.page_blocks?.recipients?.length - 1 == index ? '3%' : '0%') }]}
                                                 imageStyle={[styles.recipientsImages, styles.recipients]}
                                                 image={item?.mobile_image && { uri: getPageBlocks?.image_path + item?.mobile_image }}
                                             />
-                                            <View style={[styles.shopByFlowerView, { marginLeft: (index == 0 || index == 3) ? wp('3%') : wp('4.5%'), borderWidth: 1, borderColor: Colors.Camel, bottom: 20, }]}>
+                                            <View style={[styles.shopByFlowerView, { backgroundColor: Colors.White, marginLeft: (index == 0 || index == 3) ? wp('3%') : wp('4.5%'), borderWidth: 1, borderColor: Colors.Camel, bottom: 20, }]}>
                                                 <BoldLabel boldStyle={{ fontSize: 13, textAlign: 'center', fontFamily: Typography.RobotoBold }} title={item?.image_alt} />
                                             </View>
-                                        </View>
+                                        </TouchableOpacity>
                                     )
                                 }}
                             />}
 
                         {/* Shop Amazing gifts*/}
                         <ProductSlider
+                            categoriesView={{ marginTop: 28 }}
+                            style={{ marginTop: 10 }}
                             data={pageBlocksData?.shop_by_gifts}
                             heading={getPageBlocks?.result?.page_blocks?.row_twenty_title_one?.title}
                             sliderData={shop_by_gifts}
@@ -446,33 +459,32 @@ const Home = ({ navigation, route }) => {
                             }
                             renderItem={({ item, index }) => {
                                 return (
-                                    <View style={{}}>
+                                    <TouchableOpacity onPress={() => gotoScreen(item)} activeOpacity={0.7}>
                                         <Baner
-                                            onPress={() => gotoScreen(item)}
+                                            disabled={true}
                                             style={[styles.shopByBaner, { marginLeft: (index == 0 || index == 3) ? wp('3%') : wp('4.5%'), }]}
                                             imageStyle={styles.shopByImage}
                                             image={item?.mobile_image && { uri: getPageBlocks?.image_path + item?.mobile_image }}
                                             border
                                         />
                                         <View style={[styles.shopByFlowerView, { marginLeft: (index == 0 || index == 3) ? wp('3%') : wp('4.5%') }]}>
-                                            <BoldLabel boldStyle={{ fontSize: 13, textAlign: 'center', fontFamily: Typography.RobotoBold }} title={item?.banner_text} />
+                                            <BoldLabel boldStyle={{ fontSize: 13, textAlign: 'center', fontFamily: Typography.RobotoMedium }} title={item?.banner_text} />
                                         </View>
-                                    </View>
+                                    </TouchableOpacity>
                                 )
                             }}
                         />
 
                         {/* Luxury flowers*/}
-                        <View style={{ flex: 1, marginTop: 23 }}>
+                        <View style={{ flex: 1, marginTop: 18, }}>
                             <ImageBackground style={styles.flowerBackIcon} source={pageBlocksData?.row_eleven_banner_one?.mobile_image && { uri: getPageBlocks?.image_path + pageBlocksData?.row_eleven_banner_one?.mobile_image }} resizeMode='cover' />
-
-                            <View style={{ position: 'absolute' }}>
+                            <View style={{ position: 'absolute', paddingHorizontal: 25 }}>
                                 {pageBlocksData?.row_eleven_banner_one?.mobile_image &&
                                     <>
                                         <View style={styles.luxuryFlowersContainer}>
                                             {pageBlocksData?.row_eleven_banner_one?.banner_text && <Label style={[styles.textHeading, { color: Colors.White }]} text={pageBlocksData?.row_eleven_banner_one?.banner_text} />}
                                             {pageBlocksData?.row_eleven_banner_one?.product_price?.min_price && (
-                                                <Label style={{ fontSize: 14, color: Colors.White, lineHeight: 33 }}
+                                                <Label style={{ fontSize: 14, color: Colors.White, lineHeight: 38 }}
                                                     text={`Starting at ${countryData?.country?.currency_symbol} ${pageBlocksData?.row_eleven_banner_one?.product_price?.min_price || '0'}`}
                                                 />
                                             )}
@@ -483,45 +495,31 @@ const Home = ({ navigation, route }) => {
                                                 isCarousel = c;
                                             }}
                                             data={pageBlocksData?.row_eleven_banner_one?.product_list}
-                                            sliderWidth={width}
-                                            itemWidth={width * 0.520}
+                                            sliderWidth={width - 50}
+                                            itemWidth={width * 0.438}
                                             inactiveSlideScale={1}
-                                            scrollEnabled={false}
+                                            inactiveSlideOpacity={1}
                                             separatorWidth={0}
                                             firstItem={bottomCarouselIndex}
                                             onSnapToItem={index => setBottomCarouselIndex(index)}
 
                                             renderItem={({ item, index }) => {
                                                 return (
-                                                    <TouchableOpacity onPress={() => gotoScreen(item)} activeOpacity={0.7} style={{ alignItems: 'center', marginTop: 15, }} key={index}>
+                                                    <TouchableOpacity onPress={() => gotoScreen(item)} activeOpacity={0.7} style={{ alignItems: 'center', marginTop: 17, }} key={index}>
                                                         <ProgressiveImage
                                                             source={{ uri: getPageBlocks?.product_image_path + item?.product_image }}
                                                             style={styles.luxuryFlowersImages}
                                                             resizeMode='stretch'
                                                         />
-                                                        <View style={{ marginTop: 6 }}>
-                                                            <Label style={{ color: Colors.White, lineHeight: 25, fontSize: 14, fontFamily: Typography.LatoBold }} text={item?.product_name} numberOfLines={1} />
+                                                        <View style={{ marginTop: 10 }}>
+                                                            <Label style={{ color: Colors.White, lineHeight: 30, fontSize: 13, fontFamily: Typography.LatoMedium }} text={item?.product_name} numberOfLines={1} />
                                                         </View>
-                                                        <Label style={{ color: Colors.White, fontSize: 13, fontFamily: Typography.LatoBold, }} text={`${countryData?.country?.currency_symbol} ${item?.product_price}`} />
+                                                        <Label style={{ color: Colors.White, fontSize: 13, fontFamily: Typography.LatoMedium, }} text={`${countryData?.country?.currency_symbol} ${item?.product_price}`} />
                                                     </TouchableOpacity>
                                                 )
                                             }}
                                         />
-                                        <View style={[styles.crouselButton, { bottom: '42%' }]}>
-                                            <TouchableOpacity
-                                                onPress={goToBackPic} activeOpacity={0.6} hitSlop={styles.hitSlop}
-                                                style={[styles.crouselButtonRight, { opacity: bottomCarouselIndex == 0 ? 0.3 : 1 }]}
-                                                disabled={bottomCarouselIndex == 0}
-                                            >
-                                                <Icon style={styles.swiperIcon} source={ImagePath.Home.arrowBack} />
-                                            </TouchableOpacity>
-                                            <TouchableOpacity onPress={goToNextPic} activeOpacity={0.6} hitSlop={styles.hitSlop}
-                                                style={[styles.crouselButtonLeft, { opacity: bottomCarouselIndex == pageBlocksData?.row_eleven_banner_one?.product_list?.length - 1 ? 0.3 : 1 }]}
-                                                disabled={bottomCarouselIndex == pageBlocksData?.row_eleven_banner_one?.product_list?.length - 1}
-                                            >
-                                                <Icon style={styles.swiperIcon} source={ImagePath.Home.arrowNext} />
-                                            </TouchableOpacity>
-                                        </View>
+
                                         {pageBlocksData?.row_eleven_banner_one &&
                                             <Button
                                                 onPress={() => gotoScreen(pageBlocksData?.row_eleven_banner_one)}
@@ -531,6 +529,20 @@ const Home = ({ navigation, route }) => {
                                                 labelStyle={styles.viewCollectionButtontTitle}
                                             />}
 
+                                        <TouchableOpacity
+                                            onPress={goToBackPic} activeOpacity={0.6} hitSlop={styles.hitSlop}
+                                            style={[styles.crouselButtonRight, { opacity: bottomCarouselIndex == 0 ? 0.3 : 1 }]}
+                                            disabled={bottomCarouselIndex == 0}
+                                        >
+                                            <Icon style={styles.swiperIcon} source={ImagePath.Home.arrowBack} />
+                                        </TouchableOpacity>
+
+                                        <TouchableOpacity onPress={goToNextPic} activeOpacity={0.6} hitSlop={styles.hitSlop}
+                                            style={[styles.crouselButtonLeft, { opacity: bottomCarouselIndex == pageBlocksData?.row_eleven_banner_one?.product_list?.length - 1 ? 0.3 : 1 }]}
+                                            disabled={bottomCarouselIndex == pageBlocksData?.row_eleven_banner_one?.product_list?.length - 1}
+                                        >
+                                            <Icon style={styles.swiperIcon} source={ImagePath.Home.arrowNext} />
+                                        </TouchableOpacity>
                                     </>
                                 }
                             </View>
@@ -541,12 +553,6 @@ const Home = ({ navigation, route }) => {
                     </>}
                 </View>
             </ScrollView >
-
-            {/* {(isLoading?.isLoadMore) &&
-                <View style={styles.loadingMainContainer}>
-                    <Loader />
-                </View>
-            } */}
         </SafeAreaView >
     )
 }

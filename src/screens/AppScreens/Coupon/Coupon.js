@@ -79,7 +79,7 @@ export default Coupon = ({ route, navigation, }) => {
     };
 
     const handleDiscountCodeChange = (text) => {
-       
+
         setDiscountCode(text);
         if (text === '') {
             setCouponStatus('');
@@ -94,12 +94,8 @@ export default Coupon = ({ route, navigation, }) => {
                 <Loader />
                 :
                 <KeyboardAwareScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps='handled'>
-
                     <View style={styles.couponCodeContainer}>
-                        <View style={{}}>
-                            <BoldLabel title={Strings.CouponCode.apply} boldStyle={{ fontSize: Size.xl, }} />
-                        </View>
-                        {/* <TouchableOpacity activeOpacity={0.6} onPress={() => navigation.goBack("ShoppingCart", { discountCode: apply && discountCode ? discountCode : '', isCouponDeleted: isCouponDeleted })} style={{}}> */}
+                        <BoldLabel title={Strings.CouponCode.apply} boldStyle={{ fontSize: Size.xl, }} />
                         <TouchableOpacity activeOpacity={0.6} onPress={() => navigation.goBack()} style={{}}>
                             <Icon source={ImagePath.Other.closeCircleBlack} style={{ height: hp('5%'), width: wp('10%'), }} />
                         </TouchableOpacity>
@@ -107,9 +103,7 @@ export default Coupon = ({ route, navigation, }) => {
 
                     <View style={styles.inputMainContainer}>
                         {apply ?
-                            <View style={{ marginTop: hp('.4') }}>
-                                <RegularLabel title={couponStatus} regularStyle={{ color: Colors.Dawn }} />
-                            </View>
+                            <RegularLabel title={couponStatus} regularStyle={{ color: Colors.Dawn }} />
                             :
                             <View style={styles.InputContiner}>
                                 <TextInput

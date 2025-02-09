@@ -35,7 +35,6 @@ import {
     TrackOrder,
     PersonalizedMessage,
     CustomerReviews,
-    Home,
 } from '../../screens';
 
 import { useDispatch } from 'react-redux';

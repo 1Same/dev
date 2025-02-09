@@ -323,7 +323,7 @@ export default SelectAddress = ({ route, navigation }) => {
                 const userData = JSON.parse(response.data);
                 if (userData.status === 'success') {
                     // console.log('saveOrderBeforePayment=========', userData);
-                    navigation.navigate('Summary', { "userCartData": userCartData, 'orderNumber': userData?.result?.order_number })
+                    navigation.navigate('Payment', { "userCartData": userCartData, 'orderNumber': userData?.result?.order_number })
                     setLoadMore(false);
                 }
                 else {
@@ -444,10 +444,11 @@ export default SelectAddress = ({ route, navigation }) => {
                                 <View style={styles.borderView} />
                             </View>
 
-                            <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
-                                <View style={[styles.countView, { borderColor: Colors.QuiteGrey, }]}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, }}>
+                                <TouchableOpacity onPress={() => navigation.goBack()}
+                                    style={[styles.countView, { borderColor: Colors.QuiteGrey, }]} hitSlop={styles.hitSlop} activeOpacity={0.7}>
                                     <RobotoRegularLabel title={`${'2'}`} robotoRegularStyle={[styles.countStyle, { opacity: .8, color: Colors.QuiteGrey }]} />
-                                </View>
+                                </TouchableOpacity>
                                 <View style={[styles.borderView, { opacity: null }]} />
                             </View>
 
@@ -458,7 +459,7 @@ export default SelectAddress = ({ route, navigation }) => {
 
                         <View style={styles.proccessUpdateView}>
                             <RobotoRegularLabel title={Strings.Payment.DeliveryDetails} robotoRegularStyle={{ fontSize: 11, }} />
-                            <RobotoRegularLabel title={Strings.Payment.OrderSummary} robotoRegularStyle={{ fontSize: 11, right: 14 }} />
+                            <RobotoRegularLabel title={Strings.ShoppingCart.cartMessage} robotoRegularStyle={{ fontSize: 11, right: 14 }} />
                             <RobotoRegularLabel title={Strings.Payment.payment} robotoRegularStyle={{ fontSize: 11, right: 14 }} />
                         </View>
 
@@ -1037,7 +1038,7 @@ export default SelectAddress = ({ route, navigation }) => {
                                     })
                                 }}
                                 disabled={isLoadMore ? true : false}
-                                title={isLoadMore ? <Loader /> : Strings.SelectAddress.SELECTADDRESS}
+                                title={isLoadMore ? <Loader /> : Strings.SelectAddress.proceedToPayment}
                                 style={styles.addressButton}
                             />
                         </View>

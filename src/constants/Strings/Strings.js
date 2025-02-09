@@ -13,7 +13,7 @@ export default Strings = {
         withinLoc: 'Within ',
         outsideLoc: 'Outside ',
         continueShopping: 'CONTINUE SHOPPING',
-        continueWA: 'CONTINUE WITHOUT ADDONS',
+        continueWA: 'SKIP TO CART',
         viewCollection: 'View Collection',
         luxuryFlowers: 'Luxury Flowers',
         samdayDelivery: 'Same Day Delivery.. Order Now',
@@ -23,7 +23,8 @@ export default Strings = {
         website: 'Website',
         genuineReactionVideos: '*Genuine Reaction Videos',
         exploreMore: 'Explore More',
-        earliestDelivery: 'Earliest Delivery:'
+        earliestDelivery: 'Earliest Delivery:',
+        loadMore: 'Load more'
     },
     SignIn: {
         welcome: "Welcome",
@@ -145,7 +146,8 @@ export default Strings = {
         SELECTADDRESS: "SELECT ADDRESS",
         emailplaceHolder: "Enter Email",
         billingAdd: 'Billing Address',
-        plAddress: 'Enter Address'
+        plAddress: 'Enter Address',
+        proceedToPayment: 'PROCEED TO PAYMENT'
     },
     AddNewReminder: {
         addNewReminder: "Add New Reminder",
@@ -158,10 +160,10 @@ export default Strings = {
 
     },
     detail: {
-        addToCart: "ADD TO CART",
+        addToCart: "Add To Cart",
         GIFTADDONS: "Make It Extra Special",
         upgradeOption: "Upgrade Options",
-        selectCity: "Select City",
+        selectCity: "Choose City",
         selectTime: "Select Time",
         satisfaction100: "100% Satisfaction guaranteed.",
         satisfactionDetail: "commited to making you and your loved ones happy.",
@@ -170,8 +172,9 @@ export default Strings = {
         deliveryUnit: "Delivery Unit",
         freshFlower: "Fresh Flowers Delivery.",
         freshDetail: "We deliver fresh flowers all over the United Arab Emirates.",
-        description: "Care Guide",// old val (Description)
-        flowerCareUnit: "Delivery Information", // old val (Flower Care Unit)
+        description: "Description",
+        careGuide: "Care Guide",
+        flowerCareUnit: "Delivery Information",
         productCode: "Product Code: # 5364",
         productCodeDes: "20 stems of red roses with fillers in a cube black box with a red ribbon.",
         selectDeliveryType: "Select Delivery Type",
@@ -182,7 +185,10 @@ export default Strings = {
         freeCake: 'free_cake',
         freeChocolate: 'free_chocolate',
         freeGlassVase: 'free_glass_vase',
-        doubleTheFlowersFree: 'double_the_flowers_free'
+        glassVase: 'Arrange in Glass Vase :',
+        cakeEggless: 'Make Cake Eggless :',
+        recommendedForYou: 'Recommended For You',
+        seeWhatOtherCustomers: 'See What Other Customers Are Buying'
     },
     ShoppingCart: {
         shoppingCart: "Shopping Cart",
@@ -198,7 +204,7 @@ export default Strings = {
         orderSummary: "Order Summary",
         cart: "Cart",
         total: "Total",
-        cartId: "Cart-",
+        cartId: "Cart- ",
         proceedToCheckout: "PROCEED TO CHECKOUT",
         selectOccasion: "Select Occasion",
         message: "Message",
@@ -207,7 +213,11 @@ export default Strings = {
         clear: "Clear",
         submit: "Submit",
         continueShopping: "Continue Shopping",
-        maxCharacters: 'max characters: '
+        maxCharacters: 'max characters: ',
+        coutinue: 'Continue',
+        enterMessage: 'Enter Message',
+        enterSenderName: "Enter Sender's Name",
+        cartMessage: 'Message Cart'
     },
 
     AddressBook: {
@@ -258,20 +268,22 @@ export default Strings = {
         oderDetail: 'has been Received But your payment has been not processed',
         paymentFailedClik: 'Retry Your Payment',
         paymentFailedContect: 'If you have any urgent queries, contact us at support@uaeflowers.com or call +971 506531300',
-        NoCouponAvailable: 'No coupon available',
+        NoCouponAvailable: 'No coupon available.',
         allCities: 'All Cities',
         popularCities: 'Popular Cities',
         selectCity: "Select City",
         selectCountry: "Select Country",
         editReminder: "Edit Reminder",
         areyousureremoveitemcart: 'Are you sure you want to remove the item from cart?',
-        invalidCoupon: 'Invalid coupon code.',
+        invalidCoupon: 'Invalid coupon.',
         pleaseEnterCoupon: 'Please enter a coupon code.',
         earliestDelivery: 'Same Day Delivery',
         noSavedAddress: 'No saved address found for selected city.',
         loadeMore: 'Loade More',
         deleteAccountDe: 'Are you sure you want us to delete your account? This will be deleted your account immediately.',
-        readMore: 'Read more...'
+        readMore: 'Read more...',
+        trackOder: 'Track Order',
+        customerCare: 'Customer Care'
     },
     Dashboard: {
         dashboard: 'Dashboard',

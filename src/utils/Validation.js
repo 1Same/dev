@@ -74,11 +74,11 @@ export default Validation = {
     senderName: yup
         .string()
         // .matches(/^[A-Za-z ]*$/, 'Please must have a combination of uppercase alphabet, lowercase alphabet(A-Za-z)')
-        .required('Sender name is required.')
-        .max(40, ({ max }) => `Message maximum ${max} characters.`),
+        .required("Sender's name is required.")
+        .max(40, ({ max }) => `Sender's name maximum ${max} characters.`),
     message: yup
         .string()
-        .required('Message is required.')
+        .required('Please include a message.')
         .max(300, ({ max }) => `Message maximum ${max} characters.`),
     vatNumber: yup
         .string()

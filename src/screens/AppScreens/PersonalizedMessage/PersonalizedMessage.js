@@ -4,7 +4,7 @@ import styles from '../ShoppingCart/styles'
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { instance, Validation } from '../../../utils';
-import { BoldLabel, Colors, MediumLabel, OpenSansBoldLabel, RegularLabel, Strings } from '../../../constants';
+import { BoldLabel, Colors, ImagePath, MediumLabel, OpenSansBoldLabel, RegularLabel, RobotoBoldLabel, Strings, Typography } from '../../../constants';
 import { AlertError, Button, Loader, NewHeader, NewInputText, ToastSuccess } from '../../../components';
 import { useFocusEffect } from '@react-navigation/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -48,10 +48,9 @@ function PersonalizedMessage({ navigation }) {
             req: { "data": {} }
         }).then(async (response) => {
             const userData = JSON.parse(response.data);
-
             if (userData?.status === 'success') {
-                // console.log('shopingCart PersonalizedMessage=======', userData);
-
+                setDeliveryData(userData);
+                setSelectFill('');
                 let preMesData = [];
                 userData?.result?.map((data, index) => {
                     let itemCartMsg = {
@@ -74,14 +73,9 @@ function PersonalizedMessage({ navigation }) {
                 });
 
                 setCartData(preMesData);
-
                 if (cartItemId == '' || cartID === 1) {
                     setShowCart(userData?.result[0]?._id);
                 }
-
-                setDeliveryData(userData);
-                setSelectFill('');
-                // setCardMessageId('');
                 setLoading(false);
             }
             else {
@@ -188,40 +182,13 @@ function PersonalizedMessage({ navigation }) {
     };
 
     return (
-        <SafeAreaView style={styles.mainContainer}>
+        <SafeAreaView style={[styles.mainContainer,]}>
             <NewHeader
-                title={'Message Card'}
+                exploreIcon={false}
             />
 
             {isLoading ? <Loader /> :
                 <View>
-                    {deliveryData?.result?.length > 1 &&
-                        <View style={{}}>
-                            <FlatList
-                                data={deliveryData?.result}
-                                horizontal={true}
-                                showsHorizontalScrollIndicator={false}
-                                ListFooterComponent={<Spacer style={{ marginTop: 0, marginRight: 16 }} />}
-                                renderItem={({ item, index }) => {
-                                    return (
-                                        <View style={{ marginLeft: index === 0 ? 16 : 7, flexDirection: "row", }}>
-                                            <TouchableOpacity onPress={() => { displayCart(item?._id), Keyboard.dismiss() }}
-                                                style={[styles.cartIdContain,
-                                                {
-                                                    backgroundColor: showCart === item?._id ? Colors.Primary.Camel : "#FCFCFC",
-                                                    borderWidth: .5, borderColor: showCart === item?._id ? Colors.Primary.Camel : Colors.PaleSlate
-                                                }]}
-                                                activeOpacity={0.6} >
-                                                <OpenSansBoldLabel
-                                                    title={`Message Cart#${index + 1}`}
-                                                    openSansBoldStyle={{ color: showCart === item?._id ? Colors.White : Colors.Secondary.Black, fontSize: 13, }} />
-                                            </TouchableOpacity>
-                                        </View>
-                                    )
-                                }} />
-
-                        </View>
-                    }
                     <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
                         <Formik
                             validationSchema={cartValidationSchema}
@@ -236,62 +203,102 @@ function PersonalizedMessage({ navigation }) {
                             }}
                         >
                             {({ handleChange, handleBlur, handleSubmit, touched, values, errors, resetForm }) => (
-                                <View style={{ marginTop: 5, }} ref={refarr["cartMessageError"]}>
-                                    {cartMessageError &&
-                                        <View style={{ backgroundColor: Colors.Azalea, padding: 10, borderRadius: 5, marginHorizontal: 16 }}>
-                                            <MediumLabel mediumStyle={styles.error} title={cartMessageError} />
-                                        </View>
-                                    }
+                                <View style={styles.cartMainView} ref={refarr["cartMessageError"]}>
+                                    <View style={[styles.deliveryDetailContain, { backgroundColor: Colors.WhiteLinen, marginTop: 0, paddingVertical: 8, paddingHorizontal: 15, borderTopLeftRadius: 10, borderBottomRightRadius: 10, }]}>
+                                        <Icon style={{ width: 24, height: 24, tintColor: Colors.Black }} source={ImagePath.webIcons.message_card_icon} />
+                                        <RobotoBoldLabel title={Strings.ShoppingCart.cartMessage} robotoBoldStyle={{ fontSize: 17, marginLeft: 10 }} />
+                                    </View>
 
-                                    <NewInputText
-                                        style={{ height: 100 }}
-                                        containerStyle={{ height: 100 }}
-                                        inputName={Strings.ShoppingCart.message}
-                                        placeholder={Strings.ShoppingCart.message}
-                                        onChangeText={(val) => {
-                                            handleChange('message')(val);
-                                            setMessage(val)
-                                        }}
-                                        textAlignVertical="top"
-                                        onBlur={() => { handleBlur('message') }}
-                                        name="message"
-                                        multiline
-                                        errors={errors.message}
-                                        value={values.message}
-                                        touched={touched.message}
-                                    />
-                                    <RegularLabel title={Strings.ShoppingCart.maxCharacters + values.message?.length + '/300'} regularStyle={styles.inputLength} />
+                                    <View style={{ marginHorizontal: 12 }}>
+                                        <FlatList
+                                            data={deliveryData?.result}
+                                            horizontal={true}
+                                            showsHorizontalScrollIndicator={false}
+                                            ListFooterComponent={<Spacer style={{ marginTop: 0, marginRight: 16 }} />}
+                                            renderItem={({ item, index }) => {
+                                                return (
+                                                    <View style={{ flexDirection: "row", }}>
+                                                        <TouchableOpacity onPress={() => { displayCart(item?._id), Keyboard.dismiss() }}
+                                                            style={[styles.cartIdContain,
+                                                            {
+                                                                marginTop: 12,
+                                                                borderWidth: .5,
+                                                                paddingVertical: 12,
+                                                                backgroundColor: showCart === item?._id ? Colors.Seashell : Colors.White,
+                                                                borderColor: showCart === item?._id ? Colors.Black : Colors.White,
+                                                                paddingHorizontal: 12,
+                                                                marginHorizontal: 14,
+                                                                borderBottomWidth: 0,
+                                                            }]}
+                                                            activeOpacity={0.6} >
+                                                            <OpenSansBoldLabel
+                                                                title={`Message Cart#${index + 1}`}
+                                                                openSansBoldStyle={{ color: Colors.Secondary.Black, fontSize: 13, }} />
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                )
+                                            }} />
+                                        <View style={{ backgroundColor: Colors.Black, height: 1 }} />
+                                    </View>
 
-                                    <NewInputText
-                                        mainContainerStyle={{ marginTop: 0 }}
-                                        inputName={Strings.ShoppingCart.senderName}
-                                        placeholder={Strings.ShoppingCart.senderName}
-                                        onChangeText={(val) => {
-                                            handleChange('senderName')(val);
-                                            setSenderName(val)
-                                        }}
-                                        textAlignVertical="top"
-                                        onBlur={() => { handleBlur('senderName') }}
-                                        name="senderName"
-                                        errors={errors.senderName}
-                                        value={values.senderName}
-                                        touched={touched.senderName}
-                                    />
-                                    <RegularLabel title={Strings.ShoppingCart.maxCharacters + values.senderName?.length + '/40'} regularStyle={styles.inputLength} />
+                                    <View style={{ marginHorizontal: 12, marginVertical: 20 }}>
+                                        {cartMessageError &&
+                                            <View style={{ backgroundColor: Colors.Azalea, padding: 10, borderRadius: 5 }}>
+                                                <MediumLabel mediumStyle={styles.error} title={cartMessageError} />
+                                            </View>
+                                        }
 
-                                    <TouchableOpacity activeOpacity={0.6} style={styles.messageSubmit} onPress={() => { handleSubmit(), Keyboard.dismiss() }} >
-                                        <BoldLabel title={'Submit'} boldStyle={{ fontSize: 14, color: Colors.White }} />
-                                    </TouchableOpacity>
+                                        <NewInputText
+                                            mainContainerStyle={{ marginHorizontal: 0, marginTop: cartMessageError ? 10 : 0 }}
+                                            style={{ height: 100, fontFamily: Typography.LatoMedium, }}
+                                            containerStyle={{ height: 100, borderRadius: 5, }}
+                                            placeholder={Strings.ShoppingCart.enterMessage}
+                                            placeholderTextColor={Colors.DoveGrayNew}
+                                            onChangeText={(val) => {
+                                                handleChange('message')(val);
+                                                setMessage(val)
+                                            }}
+                                            textAlignVertical="top"
+                                            onBlur={() => { handleBlur('message') }}
+                                            name="message"
+                                            multiline
+                                            errors={errors.message}
+                                            value={values.message}
+                                            touched={touched.message}
+                                        />
+                                        <RegularLabel title={Strings.ShoppingCart.maxCharacters + values.message?.length + '/300'} regularStyle={styles.inputLength} />
 
-                                    <Button
-                                        title={'Continue'}
-                                        onPress={() => {
-                                            personalizedMessage();
-                                        }}
-                                        style={{ opacity: isSubmit ? 0.7 : Colors.Black }}
-                                        // labelStyle={{ marginLeft: Size.xm1, fontSize: 14.5, }}
-                                        disabled={isSubmit ? true : false}
-                                    />
+                                        <NewInputText
+                                            style={{ fontFamily: Typography.LatoMedium }}
+                                            mainContainerStyle={{ marginHorizontal: 0, marginTop: 7 }}
+                                            containerStyle={{ borderRadius: 5, }}
+                                            placeholder={Strings.ShoppingCart.enterSenderName}
+                                            placeholderTextColor={Colors.DoveGrayNew}
+                                            onChangeText={(val) => {
+                                                handleChange('senderName')(val);
+                                                setSenderName(val)
+                                            }}
+                                            textAlignVertical="top"
+                                            onBlur={() => { handleBlur('senderName') }}
+                                            name="senderName"
+                                            errors={errors.senderName}
+                                            value={values.senderName}
+                                            touched={touched.senderName}
+                                        />
+                                        <RegularLabel title={Strings.ShoppingCart.maxCharacters + values.senderName?.length + '/40'} regularStyle={styles.inputLength} />
+
+                                        <TouchableOpacity activeOpacity={0.6} style={styles.messageSubmit} onPress={() => { handleSubmit(), Keyboard.dismiss() }} >
+                                            <BoldLabel title={'Submit'} boldStyle={{ fontSize: 14, color: Colors.White }} />
+                                        </TouchableOpacity>
+
+                                        <Button
+                                            title={Strings.ShoppingCart.coutinue}
+                                            onPress={() => { personalizedMessage(); }}
+                                            style={{ opacity: isSubmit ? 0.7 : Colors.Black }}
+                                            labelStyle={{ fontSize: 18, }}
+                                            disabled={isSubmit ? true : false}
+                                        />
+                                    </View>
                                 </View>
 
                             )}

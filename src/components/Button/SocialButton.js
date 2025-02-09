@@ -10,10 +10,7 @@ const SocialButton = (props) => {
     return (
         <TouchableOpacity onPress={onPress}
             activeOpacity={0.6} style={[styles.socialLoginButton, style]}>
-            <View style={{ marginLeft: Size.l }}>
-                <Icon source={source} style={styles.fbSign} />
-            </View>
-            <View style={styles.emtyView} />
+            <Icon source={source} style={styles.fbSign} />
             <BoldLabel boldStyle={styles.label} title={title} />
         </TouchableOpacity>
     )
@@ -29,21 +26,21 @@ const styles = StyleSheet.create({
         height: Size.x66,
     },
     label: {
-        fontSize: Size.m1,
-        fontFamily: Typography.LatoBold,
+        fontSize: 16,
+        fontFamily: Typography.LatoMedium,
         color: Colors.Black,
         alignSelf: "center",
-        marginLeft: Size.m1
+        marginLeft: 8
     },
     emtyView: {
-        height: Size.x65,
+        // height: Size.x65,
         width: Size.x,
         marginLeft: Size.l,
         backgroundColor: "#70707070"
     },
     fbSign: {
-        height: Size.xxl,
-        width: Size.m1,
+        height: Size.m011,
+        width: Size.m011,
     },
     socialLoginButton: {
         marginHorizontal: Size.l,
@@ -54,7 +51,9 @@ const styles = StyleSheet.create({
         borderColor: Colors.Concord,
         borderWidth: .5,
         alignItems: "center",
-        height: Size.x65,
+        justifyContent: 'center',
+        paddingVertical: 10,
+        // width: '65%'
     },
     buttonView: {
         backgroundColor: Colors.Primary.Camel,

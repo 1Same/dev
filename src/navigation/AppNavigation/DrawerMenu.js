@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, ScrollView, View, TouchableOpacity, StyleSheet, FlatList, Dimensions } from "react-native";
-import { Colors, ImagePath, Label, Size, Spacer, Typography, Icon, Strings } from "../../constants";
-import { AlertError, Button, Loader, RowColumn, ToastSuccess } from "../../components";
+import { SafeAreaView, View, TouchableOpacity, StyleSheet, FlatList, Dimensions, Text } from "react-native";
+import { Colors, ImagePath, Label, Size, Typography, Icon, Strings } from "../../constants";
+import { AlertError, Button, Loader, RowColumn, SocialButton, ToastSuccess } from "../../components";
 import { instance } from "../../utils";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutSucces, setCounrtyData } from "../../features";
@@ -9,9 +9,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import FastImage from "react-native-fast-image";
 import { useDrawerStatus } from "@react-navigation/drawer";
 
+const { width, height } = Dimensions.get('window');
+
 export default DrawerMenu = ({ navigation }) => {
 
 	const [isLoading, setIsLoading] = useState(false);
+	const [subCatToggle, setSubCatToggle] = useState(false);
 	const [cat, setCat] = useState();
 	const [subCat, setSubCat] = useState();
 	const [categoriesList, setCategoriesList] = useState([]);
@@ -20,7 +23,7 @@ export default DrawerMenu = ({ navigation }) => {
 	const countryData = useSelector((state) => state.country);
 	const profileImage = authData.data?.profile_image;
 	const wasDrawerOpen = useDrawerStatus();
-	const { width, height } = Dimensions.get('window');
+
 
 	useEffect(() => {
 		async function fatchData() {
@@ -40,6 +43,7 @@ export default DrawerMenu = ({ navigation }) => {
 	}, [wasDrawerOpen]);
 
 	useEffect(() => {
+		setCat('')
 		getMenuList();
 	}, [])
 
@@ -125,12 +129,14 @@ export default DrawerMenu = ({ navigation }) => {
 	}
 
 	const gotoScreen = async (item) => {
+		console.log('item=====',item);
+		
 		if (item.url == '') {
 			return '';
 		}
 		navigation.closeDrawer();
 
-		if (item.url_type !== "static" && item.url_type !== "product" && item?.url !== "/") {
+		if (item.url_type !== "static" && item.url_type !== "product" && item?.url !== "/" && item?.url !== "in/valentines-day") {
 			if (item?.page_type == "landing") {
 				let oldCountryData = countryData.country
 				let newCountryData;
@@ -166,150 +172,150 @@ export default DrawerMenu = ({ navigation }) => {
 		}
 		else if (item.url_type === "static") {
 			navigation.navigate("Detail", { "menu_url": item })
+		}else if(item?.url == "in/valentines-day"){
+			navigation.navigate("ValentineDay", { "menu_url": item })
 		}
 		setCat('');
 		setSubCat('');
 	}
 
+	const toggleSubCat = (sub) => {
+		sub._id === subCat ? setSubCatToggle(!subCatToggle) : setSubCatToggle(true)
+		sub.child_menu?.length == 0 ? gotoScreen(sub.menu_url) : setSubCat(sub._id);
+	}
+
 	return (
 		<SafeAreaView style={{ flex: 1 }}>
-			<ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+			<View style={[style.welcomemsg, { paddingVertical: 12, paddingHorizontal: 17 }]}>
+				<TouchableOpacity hitSlop={style.closeDrawerHitSlop} onPress={() => { navigation.closeDrawer() }} >
+					<Icon source={ImagePath.webIcons.left_arrowNew} style={style.icon} />
+				</TouchableOpacity>
 
-				<View style={style.closeDrawerContainer}>
-					<TouchableOpacity hitSlop={style.closeDrawerHitSlop} onPress={() => { navigation.closeDrawer() }} >
-						<Icon source={ImagePath.Home.crossPink} style={style.icon} />
-					</TouchableOpacity>
-				</View>
+				<TouchableOpacity onPress={() => { navigation.navigate('AccountStack', { screen: 'MyProfile', params: { 'flow': 'Drawer', } }) }}
+					style={style.profileIcon} activeOpacity={0.7} hitSlop={style.hitSlop}>
+					<FastImage
+						style={{
+							width: 27,
+							height: 27,
+							borderRadius: 100,
+						}}
+						source={authData.data?.slug ? (profileImage == undefined || profileImage === "") ? ImagePath.webIcons.empty_user : {
+							uri: profileImage,
+							priority: FastImage.priority.high,
+							cache: FastImage.cacheControl.immutable
+						} : ImagePath.webIcons.empty_user}
+						resizeMode={FastImage.resizeMode.cover}
+						onError={(e) => { }}
+					/>
+				</TouchableOpacity>
+				<Label style={[style.useName, { marginLeft: authData.data?.full_name ? 8 : 16, }]} text={authData.data?.slug ? authData.data?.full_name : "Hi Guest !"} />
+			</View>
 
-				<View style={style.welcomemsg}>
-					<TouchableOpacity onPress={() => { navigation.navigate('AccountStack', { screen: 'MyProfile', params: { 'flow': 'Drawer', } }) }}
-						style={style.profileIcon} activeOpacity={0.7} hitSlop={style.hitSlop}>
+			<View style={[style.welcomemsg, { borderTopWidth: 0.7, borderColor: Colors.BorderColor }]}>
+				<RowColumn
+					touchableStyle={style.trackOrderView}
+					Image={ImagePath.Other.track_order_menu}
+					style={{ width: 17, height: 17 }}
+					label={Strings.Other.trackOder}
+					labelStyle2={{ fontSize: 13, marginLeft: 9 }}
+				/>
 
-						<FastImage
-							style={{
-								width: 60,
-								height: 60,
-								borderRadius: 100,
-							}}
-							source={authData.data?.slug ? (profileImage == undefined || profileImage === "") ? ImagePath.Other.emptyUser : {
-								uri: profileImage,
-								priority: FastImage.priority.high,
-								cache: FastImage.cacheControl.immutable
-							} : ImagePath.Other.emptyUser}
-							resizeMode={FastImage.resizeMode.cover}
-							onError={(e) => { }}
-						/>
-					</TouchableOpacity>
+				<RowColumn
+					onClick={() => goToNav('Cms', 'contact-us', 'Contact Us')}
+					touchableStyle={[style.trackOrderView, { borderRightWidth: 0 }]}
+					Image={ImagePath.Other.customer_service_icon}
+					style={{ width: 17, height: 17 }}
+					label={Strings.Other.customerCare}
+					labelStyle2={{ fontSize: 13, marginLeft: 9 }}
+				/>
+			</View>
 
-					<View style={style.welcomemsgRight}>
-						<TouchableOpacity onPress={() => navigation.navigate('AccountStack', { screen: 'MyProfile' })} activeOpacity={0.7} hitSlop={style.hitSlop}>
-							<Label style={style.useName} text={authData.data?.slug ? authData.data?.full_name : "Hi Guest!"} />
-						</TouchableOpacity>
-
-						{!authData.data?.slug ? <View style={style.welcomemsgRightBottom}>
-							<Button
-								onPress={() => { goToNav('Login') }}
-								style={style.loginSignupButton}
-								labelStyle={style.loginSignupButtonLable}
-								title="Login"
-								primaryButton
-							/>
-							<Button
-								onPress={() => { goToNav('SignUp') }}
-								style={[style.loginSignupButton, { marginLeft: Size.xs2 }]}
-								labelStyle={style.loginSignupButtonLable}
-								title="Signup"
-								primaryButton
-							/>
-						</View>
-							:
-							<Button
-								onPress={() => { logOut() }}
-								style={[style.loginSignupButton, { marginTop: 10 }]}
-								labelStyle={style.loginSignupButtonLable}
-								title="Logout"
-								primaryButton
-							/>
-						}
-					</View>
-				</View>
-
-				<Spacer style={style.spacerTop} />
-
-				{isLoading ?
-					<View style={{ height: height / 1.6 }}>
-						<Loader />
-					</View> :
-					<FlatList
-						data={categoriesList}
-						scrollEnabled={false}
-						renderItem={({ item, index }) => {
-							if (item.status == 1 && item.is_deleted == 0 && item.menu_type == "text" && categoriesList?.length > 0) {
-								return (
-									<View key={item._id}>
-										<RowColumn
+			{isLoading ?
+				<View style={{ flex: 1 }}>
+					<Loader />
+				</View> :
+				<FlatList
+					data={categoriesList}
+					renderItem={({ item, index }) => {
+						if (item.status == 1 && item.is_deleted == 0 && item.menu_type == "text" && categoriesList?.length > 0) {
+							return (
+								<View key={item._id}>
+									{item._id === cat ?
+										< RowColumn
+											onClick={() => setCat('')}
+											touchableStyle={{ paddingVertical: 15, borderBottomWidth: 1, borderColor: Colors.Gallery, width: '100%' }}
+											style={[style.shapeIcon, { tintColor: Colors.Concord, marginRight: 0 }]}
+											label={filterName(item?.menu_mobile_name)}
+											labelStyle2={[style.label, { color: Colors.BorderColor, marginLeft: 10 }]}
+											Image={ImagePath.webIcons.left_arrowNew}
+											ImageStyle={style.selectTedMenu}
+										/>
+										:
+										!cat && < RowColumn
 											onClick={() => {
 												setCat(item._id);
 												setSubCat('');
 												item.child_menu.length == 0 ? gotoScreen(item.menu_url) : '';
 											}}
-											touchableStyle={[
-												style.dropdownContainer, {
-													backgroundColor: (item._id === cat && subCat == '') ? Colors.Concord : 'white',
-												},
-											]}
+											touchableStyle={[style.dropdownContainer, { borderTopWidth: index === 0 ? 0 : 1 }]}
 											style={[style.shapeIcon, { tintColor: item.child_menu.length > 0 ? item._id === cat ? Colors.Black : Colors.Black : (item._id === cat && subCat == '') ? Colors.Concord : Colors.White }]}
 											label={filterName(item?.menu_mobile_name)}
 											labelStyle2={style.label}
-											Image={item.child_menu.length > 0 ? item._id === cat ? ImagePath.Home.openShape : ImagePath.Home.shape : ImagePath.Other.blankImage}
-										/>
-										{item._id === cat && item.child_menu.length > 0 && item.child_menu.map((sub) => (
-											sub.menu_type == "text" &&
-											<View key={sub._id}>
-												<RowColumn
-													onClick={() => {
-														sub.child_menu?.length == 0 ? gotoScreen(sub.menu_url) : setSubCat(sub._id);
-													}}
-													touchableStyle={[
-														style.dropdownContainer, {
-															backgroundColor: sub._id === subCat && sub.child_menu.length > 0 ? Colors.Concord : 'white',
-														}
-													]}
-													style={style.shapeIcon}
-													label={filterName(sub.menu_mobile_name)}
-													labelStyle2={[style.label, { paddingLeft: "6%" }]}
-													Image={sub.child_menu.length > 0 ? sub._id === subCat ? ImagePath.Home.openShape : ImagePath.Home.shape : ImagePath.Other.blankImage}
+											Image={item.child_menu.length > 0 ? item._id === cat ? ImagePath.webIcons.left_arrowNew : ImagePath.Other.rightarrows : ImagePath.Other.blankImage}
+										/>}
+									{item._id === cat && item?.child_menu?.length > 0 && item?.child_menu?.map((sub) => (
+										sub.menu_type == "text" &&
+										<View key={sub._id}>
+											<RowColumn
+												onClick={() => toggleSubCat(sub)}
+												touchableStyle={style.dropdownContainer}
+												style={style.plusIconAndMinusIcon}
+												label={filterName(sub.menu_mobile_name)}
+												labelStyle2={[style.label, { color: (sub._id === subCat && subCatToggle) ? Colors.BorderColor : Colors.Black }]}
+												Image={sub.child_menu.length > 0 ? (sub._id === subCat && subCatToggle) ? ImagePath.Other.minusIcon : ImagePath.Other.plusIcon : ImagePath.Other.blankImage}
+											/>
 
-												/>
-												{sub._id === subCat && sub.child_menu.length > 0 && sub.child_menu?.map((subItem) => (
-													subItem.menu_type == "text" &&
-													<View key={subItem._id}>
+											{(sub._id === subCat && sub.child_menu.length > 0 && subCatToggle) && sub.child_menu?.map((subItem, index) => (
+												subItem.menu_type == "text" &&
+												<View key={subItem._id}>
 
-														<RowColumn
+													<RowColumn
 
-															onClick={() => { gotoScreen(subItem?.menu_url) }}
-															touchableStyle={[
-																style.dropdownContainer, {
-																	flexDirection: 'row',
-																	backgroundColor: 'white',
-																	paddingLeft: '10%'
-																}
-															]}
-															label={filterName(subItem.menu_mobile_name)}
-															style={style.shapeIcon}
-															labelStyle2={[style.label]}
-														/>
-													</View>
-												))}
-											</View>
-										))}
-									</View>
-								);
-							}
-						}}
-					/>}
+														onClick={() => { gotoScreen(subItem?.menu_url) }}
+														touchableStyle={[
+															style.dropdownContainer, {
+																flexDirection: 'row',
+																backgroundColor: 'white',
+																borderBottomWidth: 0
+															}
+														]}
+														label={filterName(subItem.menu_mobile_name)}
+														style={style.shapeIcon}
+														labelStyle2={[style.label, { fontFamily: Typography.LatoRegular }]}
+													/>
+												</View>
+											))}
+										</View>
+									))}
+								</View>
+							);
+						}
+					}}
+				/>}
 
-				<View style={style.otherLink}>
+			<View style={style.bottomContainer}>
+				<SocialButton source={ImagePath.Auth.fbSign} title={Strings.SignIn.signInWithFB} />
+				<SocialButton source={ImagePath.Auth.googleIcon} title={Strings.SignIn.signInWithGoogle} style={style.socialBtn} />
+				<Button
+					onPress={() => { !authData.data?.slug ? goToNav('Login') : logOut() }}
+					style={style.loginSignupButton}
+					labelStyle={style.loginSignupButtonLable}
+					title={!authData.data?.slug ? "Login" : "Logout"}
+					primaryButton
+				/>
+			</View>
+
+			{/* <View style={style.otherLink}>
 					<FlatList
 						data={otherData}
 						scrollEnabled={false}
@@ -331,13 +337,20 @@ export default DrawerMenu = ({ navigation }) => {
 						}
 					/>
 					<Spacer />
-				</View>
-			</ScrollView>
+				</View> */}
 		</SafeAreaView>
 	)
 };
 
 const style = StyleSheet.create({
+	trackOrderView: {
+		backgroundColor: Colors.WhiteLinen,
+		padding: 8,
+		width: width * 0.400,
+		justifyContent: 'center',
+		borderRightWidth: 0.7,
+		borderColor: Colors.BorderColor
+	},
 	otherLinkItem: {
 		flex: 1,
 		paddingLeft: Size.l,
@@ -346,7 +359,6 @@ const style = StyleSheet.create({
 	otherLink: {
 		borderTopWidth: 0.5,
 		borderColor: Colors.Silver,
-
 	},
 	spacerTop: {
 		marginTop: Size.l,
@@ -361,22 +373,21 @@ const style = StyleSheet.create({
 		fontFamily: Typography.LatoMedium,
 	},
 	loginSignupButton: {
-		width: Size.x66 + 5,
-		height: Size.x5l,
-		backgroundColor: null,
-		borderWidth: 1,
-		borderColor: Colors.Secondary.Black,
+		marginHorizontal: Size.l,
+		paddingVertical: 10,
+		height: null,
+		backgroundColor: Colors.White,
+		marginBottom: 15
 	},
 	profileIcon: {
 		alignItems: 'flex-start',
-		marginLeft: Size.m011,
+		marginLeft: 23,
 		borderRadius: Size.x100,
 		borderColor: Colors.Secondary.Black,
-		borderWidth: 3
 	},
 	welcomemsg: {
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	welcomemsgRight: {
 		flexDirection: 'column',
@@ -399,12 +410,13 @@ const style = StyleSheet.create({
 		right: Size.xm
 	},
 	icon: {
-		width: Size.m1,
-		height: Size.m1,
+		width: 18,
+		height: 19,
 	},
 	useName: {
-		fontFamily: Typography.LatoBold,
-		fontSize: 16
+		fontFamily: Typography.LatoRegular,
+		fontSize: 15,
+		flex: 1
 	},
 	labelStyle: {
 		fontSize: Size.l - 1
@@ -417,18 +429,42 @@ const style = StyleSheet.create({
 		justifyContent: "space-between",
 		flexDirection: 'row-reverse',
 		width: '100%',
-		borderTopWidth: 1,
-		borderColor: Colors.Silver,
-		paddingVertical: Size.l
+		borderBottomWidth: 1,
+		borderColor: Colors.Gallery,
+		paddingVertical: 15
 	},
 	shapeIcon: {
 		width: Size.m0,
 		height: Size.m0,
 		top: 1,
-		marginRight: Size.m11,
+		marginRight: 13,
+	},
+	plusIconAndMinusIcon: {
+		width: 11,
+		height: 11,
+		top: 1,
+		marginRight: 12,
 	},
 	label: {
-		fontSize: 16,
-		marginLeft: Size.xl
+		fontSize: 14,
+		marginLeft: 15,
+		fontFamily: Typography.NunitoBold
+	},
+	selectTedMenu: {
+		borderRightWidth: 1,
+		height: 28,
+		alignItems: 'center',
+		justifyContent: 'center',
+		paddingLeft: 13,
+		paddingRight: 20,
+		borderColor: Colors.BorderColor
+	},
+	bottomContainer: {
+		backgroundColor: Colors.Black,
+		width: '100%'
+	},
+	socialBtn: {
+		marginTop: Size.m1,
+		marginBottom: Size.m1
 	},
 });

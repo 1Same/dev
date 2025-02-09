@@ -208,7 +208,7 @@ export default Payment = ({ navigation, route }) => {
 
                                         <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
                                             <TouchableOpacity
-                                                onPress={() => navigation.goBack()}
+                                                onPress={() => navigation.navigate('PersonalizedMessage')}
                                                 style={styles.countView}
                                                 hitSlop={styles.hitSlop}
                                                 activeOpacity={0.7}
@@ -225,7 +225,7 @@ export default Payment = ({ navigation, route }) => {
 
                                     <View style={styles.orderDetailView}>
                                         <RobotoRegularLabel title={Strings.Payment.DeliveryDetails} robotoRegularStyle={{ fontSize: 11, }} />
-                                        <RobotoRegularLabel title={Strings.Payment.OrderSummary} robotoRegularStyle={{ fontSize: 11, right: 14 }} />
+                                        <RobotoRegularLabel title={Strings.ShoppingCart.cartMessage} robotoRegularStyle={{ fontSize: 11, right: 14 }} />
                                         <RobotoRegularLabel title={Strings.Payment.payment} robotoRegularStyle={{ fontSize: 11, right: 14 }} />
                                     </View>
 

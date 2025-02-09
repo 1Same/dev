@@ -6,7 +6,7 @@ import { Colors, Icon, Size, Typography, Label, BoldLabel } from "../../constant
 
 const Button = (props) => {
 
-    const { onPress, title, style, buttomIconStyle, labelStyle, icon, swiperButton, primaryButton, Images, ImagesStyle, primaryIcon, disabled } = props;
+    const { onPress, title, style, cartIconStyle, buttomIconStyle, labelStyle, icon, swiperButton, primaryButton, Images, ImagesStyle, primaryIcon, disabled } = props;
 
     return (
         <View>
@@ -24,13 +24,11 @@ const Button = (props) => {
             {!primaryButton && !swiperButton &&
                 <TouchableOpacity onPress={onPress}
                     activeOpacity={0.6} style={[styles.buttonContainer, style]} disabled={disabled}>
-                    {icon ? <Icon source={ImagePath.Other.cart} style={{ width: 25, height: 25, tintColor: Colors.White }} /> : null}
+                    {icon ? <Icon source={icon ? icon : ImagePath.Other.cart} style={[styles.cartIcon, cartIconStyle]} /> : null}
                     <BoldLabel boldStyle={[styles.label, labelStyle]} title={title} />
                 </TouchableOpacity>
             }
-
         </View>
-
     )
 }
 
@@ -69,7 +67,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: Size.xs2,
-
     },
     primaryTitle: {
         color: '#fff',

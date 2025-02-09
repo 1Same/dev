@@ -60,7 +60,7 @@ export default SplashScreen = ({ navigation }) => {
                     index: 0,
                     routes: [
                         { name: 'MyDrawerNav' }
-                        // { name: 'Home' }
+                        // { name: 'ValentineDay' }
                     ]
                 });
             }, 2000);

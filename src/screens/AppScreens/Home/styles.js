@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from 'react-native'
+import { Dimensions, Platform, StyleSheet } from 'react-native'
 import { Colors, Typography } from "../../../constants";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -8,7 +8,7 @@ export default styles = StyleSheet.create({
 
     textHeading: {
         fontSize: 18,
-        fontFamily: Typography.RobotoBold,
+        fontFamily: Typography.LatoBold,
         textAlign: "center"
     },
     ratingText: {
@@ -24,16 +24,15 @@ export default styles = StyleSheet.create({
         marginBottom: 23
     },
     exploreButton: {
-        marginTop: 0,
         marginHorizontal: 0,
         paddingHorizontal: 40,
         height: 40,
         borderRadius: 6,
     },
     luxuryFlowersImages: {
-        height: width * 0.480, width: width * 0.480,
-        borderTopRightRadius: 12,
-        borderBottomLeftRadius: 12,
+        height: width * 0.410, width: width * 0.410,
+        borderTopRightRadius: 10,
+        borderBottomLeftRadius: 10,
     },
     categoriesContainer: {
         borderWidth: 1,
@@ -42,23 +41,23 @@ export default styles = StyleSheet.create({
         borderBottomLeftRadius: 12,
         marginLeft: wp('3%'),
         width: wp('94%'),
-        marginTop: 30,
-        height: 160
+        marginTop: 35,
+        height: 170
     },
     swiperContainer: {
-        height: 300,
+        height: 310,
     },
     activeDot: {
-        width: 8,
-        height: 8,
-        borderWidth: 1,
-        borderColor: Colors.White,
-        elevation: 5,
+        width: 25,
+        height: 11,
+        backgroundColor: Colors.White,
+        marginHorizontal: 4,
     },
     dotStyle: {
-        width: 8,
-        height: 8,
-        elevation: 5,
+        width: 11,
+        height: 11,
+        backgroundColor: Colors.Cararra,
+        marginHorizontal: 4,
     },
     shopByBaner: {
         marginTop: 17,
@@ -66,23 +65,17 @@ export default styles = StyleSheet.create({
         borderTopRightRadius: 0,
         borderBottomLeftRadius: 0,
         borderTopLeftRadius: 9.5,
-        borderBottomRightRadius: 9.5
+        borderBottomRightRadius: 9.5,
     },
     shopByFlowerView: {
         backgroundColor: Colors.Fantasy,
         width: wp('23%'),
-        paddingVertical: 8,
+        paddingVertical: 6,
         alignSelf: 'center',
         borderTopLeftRadius: 10,
         borderBottomRightRadius: 10,
-        elevation: 2, // For Android
         zIndex: 999,
         bottom: 17,
-        // iOS Shadow Properties
-        shadowColor: '#000', // Shadow color
-        shadowOffset: { width: 0, height: 2 }, // Shadow offset
-        shadowOpacity: 0.2, // Shadow opacity
-        shadowRadius: 4, // Shadow blur
     },
     shopByImage: {
         width: wp('28%'),
@@ -114,15 +107,15 @@ export default styles = StyleSheet.create({
         borderBottomRightRadius: 11,
     },
     recipientsImages: {
-        width: wp('32%'),
-        height: wp('32%'),
+        width: wp('30%'),
+        height: wp('30%'),
     },
     viewCollectionButton: {
         backgroundColor: Colors.White,
         height: 38,
-        paddingHorizontal: 25,
+        paddingHorizontal: 30,
         borderRadius: 4,
-        marginTop: 0,
+        marginTop: 27,
         alignSelf: 'center',
     },
     viewCollectionButtontTitle: {
@@ -132,20 +125,22 @@ export default styles = StyleSheet.create({
     },
     flowerBackIcon: {
         width: '100%',
-        height: 420
-        // height: '55%'
+        height: Platform.OS == 'android' ? 410 : 420
     },
     crouselButton: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        bottom: hp('20.4%')
+        // bottom: hp('20.4%'),
+
     },
     crouselButtonRight: {
-        marginRight: '19%'
+        position: 'absolute', top: '45%',
+        marginLeft: 5
     },
     crouselButtonLeft: {
-        marginLeft: '19%',
+        position: 'absolute', top: '45%', right: 0,
+        marginRight: 5
     },
     hitSlop: {
         top: 10,
@@ -159,28 +154,27 @@ export default styles = StyleSheet.create({
         marginTop: 25
     },
     swiperIcon: {
-        width: 32, height: 32
+        width: 39, height: 29
     },
     video: {
         width: 950,
         height: 100,
     },
     fristSwiper: {
-        width: width - 24,
-        height: 268,
+        width: '100%',
+        height: '100%',
         borderTopLeftRadius: 10,
         borderBottomRightRadius: 10,
-        marginLeft: 12
     },
     productSliderView: {
         marginTop: 0,
         marginHorizontal: 0,
-        paddingHorizontal: 14,
-        height: 38,
-        borderRadius: 0,
-        minWidth: 125,
+        height: null,
+        borderRadius: 2.5,
+        minWidth: wp('38%'),
         marginLeft: 10,
         borderWidth: 1,
+        padding: 7
     },
     productSliderMainView: {
         backgroundColor: Colors.WhiteLinen,

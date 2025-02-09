@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Colors, Label, Typography } from "../../constants";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
@@ -9,8 +9,20 @@ import ProgressiveImage from "../ProgressiveImage/ProgressiveImage";
 
 export default Baner = memo((props) => {
 
-    const { image, style, onText, imageStyle, border, title, titleBottom, titleStyle, bottonTitleStyleView, isLoading = false, onPress, banerStyle = false } = props;
-    const { width, height } = Dimensions.get('window');
+    const {
+        image,
+        style,
+        imageStyle,
+        border,
+        title,
+        titleBottom,
+        titleStyle,
+        bottonTitleStyleView,
+        isLoading = false,
+        onPress,
+        banerStyle = false,
+        disabled = false
+    } = props;
 
     return (
         <View>
@@ -31,7 +43,7 @@ export default Baner = memo((props) => {
                         borderColor: border ? '#B98D5B' : Colors.White,
                         flexDirection: title ? 'row' : 'column',
                         alignItems: 'center',
-                    }]} activeOpacity={0.8}>
+                    }]} disabled={disabled} activeOpacity={0.8}>
 
                         {image &&
                             <ProgressiveImage

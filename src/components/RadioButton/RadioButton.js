@@ -4,12 +4,15 @@ import { ImagePath, RegularLabel } from "../../constants";
 
 
 
-const RadioButton = ({ onClick, style, selected, ckeckBoxIcon = false, iconStyle, radioDescription, radioDescriptionStyle }) => {
+const RadioButton = ({ onClick, style, selected, iconStyle, radioDescription, radioDescriptionStyle, disabled = false, otherActiveIcon = false, radioActiveView }) => {
     return (
-        <TouchableOpacity onPress={onClick} activeOpacity={0.7} hitSlop={styles.hitSlop} style={styles.rowView}>
+        <TouchableOpacity onPress={onClick} activeOpacity={0.7} hitSlop={styles.hitSlop} style={styles.rowView} disabled={disabled}>
             <View style={[styles.radioView, style]}>
                 {selected ? (
-                    <Image style={[styles.radioIcon, iconStyle]} source={ImagePath.Other.rightIcon} />
+                    otherActiveIcon ?
+                        <View style={[styles.radioView, styles.radioActiveView, radioActiveView]} />
+                        :
+                        <Image style={[styles.radioIcon, iconStyle]} source={ImagePath.Other.rightIcon} />
                 ) : (
                     <View style={[styles.radioIcon, iconStyle]} /> // Empty box when not selected
                 )}
@@ -54,4 +57,12 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.White,
         marginLeft: 1,
     },
+    radioActiveView: {
+        width: 10,
+        height: 10,
+        borderRadius: 10,
+        backgroundColor: Colors.WaterBlue,
+        borderWidth: 0,
+        marginLeft: 0,
+    }
 })

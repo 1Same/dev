@@ -40,8 +40,8 @@ instance.interceptors.request.use(async (request) => {
     requestData['api_type'] = 'mobile'
     requestData['device_type'] = Platform.OS === 'ios' ? 'ios' : 'android'
 
-    if (request?.url == '/get_product_list') {
-        // console.log("requestData==>>>>>>>>>>>>", request?.url, '+', requestData);
+    if (request?.url == '/get_landing_page_block_products') {
+        console.log("requestData==>>>>>>>>>>>>", request?.url, '+', requestData);
     }
 
     let postData = base64.encode(JSON.stringify(requestData));

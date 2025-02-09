@@ -331,7 +331,7 @@ export default Login = ({ navigation, route }) => {
                     <View style={[styles.emtyView,]} />
                 </View> */}
                 {/* <SocialButton onPress={fbLogin} source={ImagePath.Auth.fbSign} title={Strings.SignIn.signInWithFB} /> */}
-                {/* <SocialButton onPress={googleLogin} source={ImagePath.Auth.googleSign} title={Strings.SignIn.signInWithGoogle} style={styles.socialBtn} /> */}
+                {/* <SocialButton onPress={googleLogin} source={ImagePath.Auth.googleIcon} title={Strings.SignIn.signInWithGoogle} style={styles.socialBtn} /> */}
             </KeyboardAwareScrollView>
         </SafeAreaView >
     )

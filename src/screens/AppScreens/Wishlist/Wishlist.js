@@ -1,47 +1,42 @@
 import React, { useState, useEffect, useCallback, } from "react";
-import { SafeAreaView, View, FlatList, TouchableOpacity, Text } from 'react-native';
+import { SafeAreaView, View, FlatList } from 'react-native';
 import styles from "../Listing/styles";
-import { ImagePath, Label, Spacer, Size, Strings, RegularLabel, Typography, Colors } from "../../../constants";
-import { RowColumn, Loader, ToastError, AlertError, ToastSuccess, NewHeader, ProgressiveImage } from "../../../components";
+import { ImagePath, Label, Spacer, Strings } from "../../../constants";
+import { Loader, ToastError, AlertError, ToastSuccess, NewHeader, ProductList } from "../../../components";
 import { instance } from "../../../utils";
 import { useFocusEffect } from "@react-navigation/native";
 import { useSelector } from "react-redux";
-import FastImage from "react-native-fast-image";
 
-export default Wishlist = ({ navigation }) => {
+const Wishlist = ({ navigation }) => {
 
     const [wishlistData, setWishlistData] = useState([]);
     const [imageUrl, setImageUrl] = useState();
-    const [isLoding, setIsLoding] = useState(false);
     const [isLoadMore, setIsLoadMore] = useState(true);
     const [isDataFetched, setIsDataFetched] = useState(true);
     const [page, setPage] = useState(0);
-    const [addProductWishList, setAddProductWishList] = useState();
     const [wishListLoader, setWishListLoader] = useState(false);
     const countryData = useSelector((state) => state.country);
     const heartActiveIcon = require('../../../assets/Images/Other/heartActive.png');
 
     useFocusEffect(useCallback(() => {
-        // navigation.getParent()?.setOptions({ tabBarStyle: { display: 'none' } });
         setPage(0);
-        setIsLoding(true);
         setIsLoadMore(true);
-        getProdectData(1, true);
     }, []));
 
     useEffect(() => {
         getProdectData(1, true);
+        setWishListLoader(true);
     }, [countryData?.country?.currency_symbol]);
 
     const getProdectData = (pageNo = 0, loadData = false) => {
 
         if ((isLoadMore && isDataFetched) || loadData) {
-            let currentPage = pageNo == 1 ? 1 : page + 1
+            let currentPage = pageNo == 1 ? 1 : page + 1;
             setPage(currentPage);
 
             setIsDataFetched(false);
             instance.post('/get_wishlist', {
-                req: { "data": { "limit": 10, "page": currentPage } }
+                req: { "data": { "limit": 20, "page": currentPage } }
             }).then(async (response) => {
                 const userData = JSON.parse(response.data);
                 if (userData.status === 'success') {
@@ -63,19 +58,17 @@ export default Wishlist = ({ navigation }) => {
                 }
                 else {
                     ToastError(userData?.message);
-                    setIsLoding(false);
+                    setWishListLoader(false);
                     setIsDataFetched(true);
                     setIsLoadMore(false);
                 }
-
-                setIsLoding(false);
+                setWishListLoader(false);
                 setIsDataFetched(true);
-
             }).catch(error => {
                 console.log('getProdectData=====catch====', error);
                 navigation.navigate('CatchError');
                 AlertError(Strings.Other.catchError);
-                setIsLoding(false);
+                setWishListLoader(false);
                 setIsDataFetched(true);
                 setIsLoadMore(false)
             });
@@ -93,18 +86,14 @@ export default Wishlist = ({ navigation }) => {
                 setPage(0);
                 getProdectData(1, true);
                 ToastSuccess(userData?.message)
-
             }
             else {
                 ToastError(userData?.message)
-                setIsLoding(false);
                 setWishListLoader(false);
             }
-
         }).catch(error => {
             console.log('removeProdect=======catch===', error);
             AlertError(Strings.Other.catchError);
-            setIsLoding(false)
             setWishListLoader(false);
         });
     };
@@ -114,139 +103,81 @@ export default Wishlist = ({ navigation }) => {
             isLoadMore == true ?
                 <Loader mainContainer={{ marginVertical: '4%' }} />
                 :
-                <Spacer />
+                <Spacer style={{ height: 30 }} />
         )
     }
 
+    const getOffer = (item) => (
+        item.tag_status == 1 ?
+            < Icon style={styles.offerFlowerIcon} source={
+                item?.tag_key == Strings.detail.freeShiping ?
+                    ImagePath.Other.freeShiping
+                    :
+                    item?.tag_key == Strings.detail.freeCake ?
+                        ImagePath.Other.freeCake
+                        :
+                        item?.tag_key == Strings.detail.freeChocolate ?
+                            ImagePath.Other.freeChocolate
+                            :
+                            item?.tag_key == Strings.detail.freeGlassVase ?
+                                ImagePath.Other.freeGlassVase
+                                :
+                                item?.tag_key == Strings.detail.doubleTheFlowersFree ?
+                                    ImagePath.Other.doubleTheFlowersFree
+                                    :
+                                    null}
+            />
+            : item?.product_price_detail?.hot_offers === 1 ?
+                <Icon style={styles.offerIcon} source={ImagePath.Other.offer} />
+                : null
+    );
+
     return (
         <SafeAreaView style={styles.container}>
-
             <NewHeader
-                // title='Wishlist'
                 exploreIcon
                 wishListShow
             />
 
-            {isLoding ?
-                <Loader />
-                :
-                wishlistData.length > 0 ?
-                    <FlatList
-                        data={wishlistData}
-                        numColumns={2}
-                        scrollEnabled={true}
-                        onEndReached={getProdectData}
-                        onEndReachedThreshold={0.5}
-                        showsVerticalScrollIndicator={false}
-                        ListFooterComponent={listFooter}
-                        renderItem={({ item }) => {
+            {(wishlistData.length > 0 && imageUrl) ?
+                <FlatList
+                    data={wishlistData}
+                    numColumns={2}
+                    scrollEnabled={true}
+                    onEndReached={getProdectData}
+                    onEndReachedThreshold={0.5}
+                    showsVerticalScrollIndicator={false}
+                    ListFooterComponent={listFooter}
+                    renderItem={({ item }) => {
+                        return (
+                            <ProductList
+                                onClickProduct={() => navigation?.navigate('Detail', { "productSlug": item?.slug, "productId": item?._id })}
+                                onClick={() => removeProdect(item?.slug)}
+                                productImage={{ uri: imageUrl + item?.product_image }}
+                                productImageStyle={item.product_name ? styles.flowerIcon : styles.bannerFlowerIcon}
+                                productName={item?.product_name}
+                                numberOfLines={1}
+                                productPrice={`${countryData?.country.currency_symbol} ${item.product_price_detail?.new_price || '0'}`}
+                                oldPrice={item?.product_price_detail?.hot_offers === 1 && `${countryData?.country.currency_symbol} ${item?.product_price_detail?.old_price ? item?.product_price_detail?.old_price : ''}`}
+                                rating_avg={item?.rating_avg}
+                                review_count={`(${item.review_count})`}
+                                delivery_frequency={item?.delivery_frequency}
+                                heartIcon={heartActiveIcon}
+                                offerIcon={getOffer(item)}
+                            />
+                        )
+                    }}
+                /> :
+                !wishListLoader && < View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+                    <Label text={Strings.Other.notRecord} />
+                </View >}
 
-                            return (
-                                <View key={item?._id}>
-                                    <TouchableOpacity onPress={() => navigation?.navigate('Detail', { "productSlug": item?.slug, "productId": item?._id })}
-                                        style={{ marginTop: Size.xm2 }} activeOpacity={0.8}>
-
-                                        <View style={styles.flowersContainer} >
-
-                                            <ProgressiveImage
-                                                style={styles.flowerIcon}
-                                                source={{
-                                                    uri: imageUrl + item?.product_image,
-                                                }} resizeMode={'stretch'}
-                                            />
-
-                                            <View style={{ margin: 5 }}>
-
-                                                <RegularLabel
-                                                    regularStyle={styles.regularText}
-                                                    title={item?.product_name}
-                                                    numberOfLines={1}
-                                                    ellipsizeMode={'tail'}
-                                                />
-
-                                                <View style={[styles.rowColumn, { marginTop: 2 }]}>
-                                                    <Label style={[styles.boldText, { right: 7 }]} text={`${item?.product_price_detail.old_price ? " " : ""} ${countryData?.country.currency_symbol} ${item?.product_price_detail?.new_price ? item.product_price_detail?.new_price : ''}`} />
-
-                                                    {item?.product_price_detail?.hot_offers === 1 &&
-                                                        <View style={{}}>
-                                                            <Label style={[styles.boldText, { color: Colors.SmokeyGrey, marginTop: Platform.OS == 'ios' ? 3 : 0 }]} text={`${countryData?.country.currency_symbol} ${item?.product_price_detail?.old_price ? item?.product_price_detail?.old_price : ' '}`} />
-                                                            <View style={[styles.disCountBoder, { backgroundColor: item?.product_price_detail.old_price ? Colors.SmokeyGrey : Colors.White, borderColor: item?.product_price_detail.old_price ? Colors.SmokeyGrey : Colors.White }]} />
-                                                        </View>
-                                                    }
-                                                </View>
-
-                                                <View style={styles.productRatingCon}>
-                                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                        <Label style={[styles.deliveryLabel, { color: Colors.Concord }]} text={item?.rating_avg} />
-                                                        <View style={{ marginLeft: 1 }}>
-                                                            <Icon style={styles.ratingIcon} source={ImagePath.Other.singleStar} />
-                                                        </View>
-
-                                                        <Label style={[styles.deliveryLabel, { marginLeft: 3, color: Colors.Concord }]} text={`(${item.review_count})`} />
-                                                    </View>
-
-                                                    {item?.delivery_frequency ?
-                                                        <View style={{ marginVertical: 5 }}>
-                                                            <Text style={{ fontSize: 11, color: Colors.Black, fontFamily: Typography.LatoMedium }}>{`Earliest Delivery:`}<Text style={{ fontSize: 11, color: Colors.Red, fontFamily: Typography.LatoBold }}>{item?.delivery_frequency}</Text></Text>
-                                                        </View>
-                                                        : <View />
-                                                    }
-                                                    {/* {item?.delivery_frequency ?
-                                                        <View style={styles.samedayDay}>
-                                                            <RowColumn
-                                                                titleStyle={{ marginLeft: 0, fontSize: 12 }}
-                                                                title={item?.delivery_frequency == 'Today' ? Strings.Other.earliestDelivery : null}
-                                                                labelStyle={styles.deliveryLabel}
-                                                                labelStyle1={[styles.deliveryLabel, { fontFamily: Typography.LatoBold }]}
-                                                                title1={item?.delivery_frequency == 'Today' ? '' : item.delivery_frequency == 'Tomorrow' ? item.delivery_frequency : null}
-                                                            />
-                                                        </View>
-                                                        :
-                                                        <View />} */}
-                                                </View>
-                                                {/* <Spacer style={styles.spacerBottom} /> */}
-                                            </View>
-                                        </View>
-
-                                        <View style={styles.offerIconContainer} >
-                                            {item.tag_status == 1 ?
-                                                < Icon style={styles.offerFlowerIcon} source={
-                                                    item?.tag_key == Strings.detail.freeShiping ?
-                                                        ImagePath.Other.freeShiping
-                                                        :
-                                                        item?.tag_key == Strings.detail.freeCake ?
-                                                            ImagePath.Other.freeCake
-                                                            :
-                                                            item?.tag_key == Strings.detail.freeChocolate ?
-                                                                ImagePath.Other.freeChocolate
-                                                                :
-                                                                item?.tag_key == Strings.detail.freeGlassVase ?
-                                                                    ImagePath.Other.freeGlassVase
-                                                                    :
-                                                                    item?.tag_key == Strings.detail.doubleTheFlowersFree ?
-                                                                        ImagePath.Other.doubleTheFlowersFree
-                                                                        :
-                                                                        null}
-                                                />
-                                                : item?.product_price_detail?.hot_offers === 1 ? <Icon style={styles.offerIcon} source={ImagePath.Other.offer} /> : null}
-
-                                            <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                                                <TouchableOpacity onPress={() => { removeProdect(item?.slug), setAddProductWishList(item._id) }}
-                                                    style={styles.heartIconCon} activeOpacity={0.7}>
-                                                    {item._id == addProductWishList && wishListLoader == true ? <Loader loadStyle={styles.wishlistLoader} size={'small'} /> : < Icon style={styles.heartIcon} source={heartActiveIcon} />}
-                                                </TouchableOpacity>
-                                            </View>
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
-                            )
-                        }}
-                    /> :
-                    < View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-                        <Label text={Strings.Other.notRecord} />
-                    </View >
+            {wishListLoader &&
+                <View style={styles.loadingMainContainer}>
+                    <Loader />
+                </View>
             }
-
         </SafeAreaView >
     )
-}
+};
+export default Wishlist;
