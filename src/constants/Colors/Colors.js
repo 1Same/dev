@@ -79,5 +79,10 @@ export default Colors = {
     Pizazz: '#ff9500',
     Stiletto: '#a32e2e',
     Cararra: '#EAEAE6',
-    MineShaft: '#222222'
+    MineShaft: '#222222',
+    Gray: '#919191',
+    Rosewood: '#590700',
+    Minsk: '#343494',
+    ForestGreen: '#2A9033',
+    TiaMaria: '#C84E10'
 }

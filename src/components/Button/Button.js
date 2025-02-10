@@ -2,11 +2,23 @@ import React, { memo, useState } from "react";
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import { Colors, Icon, Size, Typography, Label, BoldLabel } from "../../constants";
 
-
-
 const Button = (props) => {
 
-    const { onPress, title, style, cartIconStyle, buttomIconStyle, labelStyle, icon, swiperButton, primaryButton, Images, ImagesStyle, primaryIcon, disabled } = props;
+    const {
+        onPress,
+        title,
+        style,
+        cartIconStyle,
+        buttomIconStyle,
+        labelStyle,
+        icon,
+        swiperButton,
+        primaryButton,
+        Images,
+        ImagesStyle,
+        primaryIcon,
+        disabled
+    } = props;
 
     return (
         <View>
@@ -18,7 +30,7 @@ const Button = (props) => {
             {primaryButton ?
                 <TouchableOpacity disabled={disabled} onPress={onPress} style={[styles.primaryButton, style]} activeOpacity={0.6}>
                     {title && <Label style={[styles.primaryTitle, labelStyle]} text={title} />}
-                    {primaryIcon && <Icon source={primaryIcon} style={[buttomIconStyle, { width: 25, height: 25 }]} />}
+                    {primaryIcon && <Icon source={primaryIcon} style={[{ width: 25, height: 25 }, buttomIconStyle]} />}
                 </TouchableOpacity> : null
             }
             {!primaryButton && !swiperButton &&
@@ -58,7 +70,7 @@ const styles = StyleSheet.create({
         marginTop: Size.xxs
     },
     title: {
-        color: '#fff',
+        color: Colors.White,
         fontSize: Size.xm1
     },
     primaryButton: {
@@ -69,9 +81,8 @@ const styles = StyleSheet.create({
         borderRadius: Size.xs2,
     },
     primaryTitle: {
-        color: '#fff',
+        color: Colors.White,
         fontSize: Size.m0,
         fontFamily: Typography.LatoBold
     },
-})
-
+});

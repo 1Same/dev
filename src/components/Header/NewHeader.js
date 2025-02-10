@@ -121,7 +121,7 @@ const NewHeader = (props) => {
                     <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
                         <TouchableOpacity activeOpacity={0.7} onPress={onPress ? onPress : () => goToNextScreen()}
                             style={{}} hitSlop={styles.hitSlop}>
-                            <Icon source={ImagePath.Auth.backArrow} style={[styles.iconStyle, { width: 24 }]} />
+                            <Icon source={ImagePath.Other.arrow_left_header} style={[styles.iconStyle, { width: 24 }]} />
                         </TouchableOpacity>
 
                         {title == 'Message Card' ?

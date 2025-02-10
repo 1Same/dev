@@ -20,4 +20,5 @@ export { default as useNetInfo } from './InternetConnection/InternetConnection';
 export { default as PopUp } from './PopUp/PopUp';
 export { default as ProgressiveImage } from './ProgressiveImage/ProgressiveImage';
 export { default as ComonBottomSheet } from './ComonBottomSheet/ComonBottomSheet';
+export { default as AnimatedPopup } from './AnimatedPopup/AnimatedPopup';
 

@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Alert, Dimensions, FlatList, Image, Modal, SafeAreaView, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
-import { AlertError, BottomSheet, Loader, NewHeader, ProductList, ReviewRating, ToastError, ToastSuccess } from "../../../components";
+import { Dimensions, FlatList, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import { AlertError, AnimatedPopup, BottomSheet, Loader, NewHeader, ProductList, ReviewRating, ToastError, ToastSuccess } from "../../../components";
 import styles from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
-import { Colors, Icon, ImagePath, Label, Spacer, Typography } from "../../../constants";
+import { Icon, ImagePath, Label } from "../../../constants";
 import { isEmptyObj } from "../../../lib";
 import { instance } from "../../../utils";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -49,13 +49,6 @@ const Listing = ({ navigation, route }) => {
         setPageDataParam(route.params?.menu_url ? route.params?.menu_url : {})
         getProdectData(1, false, '');
     }, [countryData?.country?.currency_symbol, route?.params]);
-
-    // sort type array
-    const sortAllData = [
-        { value: 'Recommended', id: 5, sort: '', 'icon': ImagePath.Other.singleStar, },
-        { value: 'Low to High', id: 6, sort: 'low_to_high', 'icon': ImagePath.Other.upArrow, 'color': Colors.Red },
-        { value: 'High to Low', id: 7, sort: 'high_to_low', 'icon': ImagePath.Other.downArrow, 'color': Colors.Green },
-    ];
 
     // sortButton action function
     const sortButton = (val) => {
@@ -189,34 +182,31 @@ const Listing = ({ navigation, route }) => {
     // product listingHeader component
     const listingHeader = () => {
         return (
-            <>
-                {productData?.length > 0 ?
-                    <View>
-                        {productListingData?.seo_content?.seo_title !== '' &&
-                            <View style={styles.manView}>
-                                {!!productListingData?.seo_content?.seo_title &&
-                                    <RenderHtml
-                                        contentWidth={width}
-                                        source={{ html: productListingData?.seo_content?.seo_title }}
-                                        tagsStyles={styles.htmlCode}
-                                    />}
+            <View style={{ flex: 1 }}>
+                {(productListingData?.seo_content?.seo_title !== '' && productData?.length > 0) &&
+                    <View style={styles.manView}>
+                        {!!productListingData?.seo_content?.seo_title &&
+                            <RenderHtml
+                                contentWidth={width}
+                                source={{ html: productListingData?.seo_content?.seo_title }}
+                                tagsStyles={styles.htmlCode}
+                            />}
 
-                                <TouchableOpacity
-                                    onPress={() => setCommonData({ ...commonData, sortData: true })}
-                                    hitSlop={styles.hitSlop} activeOpacity={0.7}
-                                    style={[styles.rowColumn, { alignSelf: 'flex-end' }]}
-                                >
-                                    <Icon style={{ width: 16.5, height: 16.5, transform: [{ rotateX: '180deg' }], marginRight: 2 }} source={ImagePath.Other.sort} />
-                                    <Label style={styles.oderTitle} text={'Sort By:'} />
-                                </TouchableOpacity>
-                            </View>}
-                    </View>
-                    :
-                    !isLoading && <View style={{ height: hp('45%'), justifyContent: "center", alignItems: "center" }}>
+                        <TouchableOpacity
+                            onPress={() => setCommonData({ ...commonData, sortData: true })}
+                            hitSlop={styles.hitSlop} activeOpacity={0.7}
+                            style={[styles.rowColumn, { alignSelf: 'flex-end' }]}
+                        >
+                            <Icon style={{ width: 16.5, height: 16.5, transform: [{ rotateX: '180deg' }], marginRight: 2 }} source={ImagePath.Other.sort} />
+                            <Label style={styles.oderTitle} text={'Sort By:'} />
+                        </TouchableOpacity>
+                    </View>}
+
+                {(!isLoading && productData?.length <= 0) &&
+                    <View style={{ height: hp('45%'), justifyContent: "center", alignItems: "center" }}>
                         <Label style={{}} text={"No Products Found."} />
-                    </View>
-                }
-            </>
+                    </View>}
+            </View>
         )
     };
 
@@ -230,6 +220,7 @@ const Listing = ({ navigation, route }) => {
     };
 
     const gotoScreen = async (data) => {
+        setCommonData({ ...commonData, sortData: false })
         const item = data.menu_url
         if (item == '') {
             return '';
@@ -350,40 +341,25 @@ const Listing = ({ navigation, route }) => {
                                 loader={item._id == addProductWishList && commonData.wishListLoader}
                                 offerIcon={getOffer(item)}
                             />
-                        )
+                        );
                     }}
+                />
+
+                {/* Move AnimatedPopup outside of FlatList */}
+                <AnimatedPopup
+                AnimatedStyle={{right:23}}
+                    visible={commonData.sortData}
+                    onClose={() => setCommonData({ ...commonData, sortData: false })}
+                    getValue={(values) => sortButton(values.sort)}
                 />
             </View>
 
-            {commonData.sortData ?
-                <Modal
-                    animationType="none"
-                    transparent={true}
-                    visible={commonData.sortData}
-                    onRequestClose={() => {
-                        setCommonData({ ...commonData, sortData: false })
-                    }}>
-                    <TouchableWithoutFeedback onPress={() => setCommonData({ ...commonData, sortData: false })}>
-                        <View style={{ backgroundColor: 'rgba(0,0,0,0.1)', flex: 1, justifyContent: 'center', alignItems: 'center' }} activeOpacity={0.9}>
-                            <TouchableOpacity disabled={false} activeOpacity={10} style={styles.shortingPopup}>
-                                {sortAllData?.map((item) => {
-                                    return (
-                                        <TouchableOpacity onPress={() => sortButton(item.sort)} style={styles.shortContainer} key={item.id} hitSlop={styles.hitSlop}>
-                                            <Icon style={{ height: 18, width: 18, tintColor: item.color }} source={item?.icon} />
-                                            <Label style={{ fontSize: 16, fontFamily: Typography.LatoMedium, marginLeft: 10 }} text={item.value} />
-                                        </TouchableOpacity>
-                                    )
-                                })}
-                            </TouchableOpacity>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </Modal >
-                : null}
 
-            {!isLoading && <BottomSheet
-                openSheet={commonData.openLocationPopup}
-                isLoading={null}
-            />}
+            {!isLoading &&
+                <BottomSheet
+                    openSheet={commonData.openLocationPopup}
+                    isLoading={null}
+                />}
 
             {isLoading &&
                 <View style={styles.loadingMainContainer}>

@@ -152,9 +152,9 @@ export default styles = StyleSheet.create({
   htmlCode: {
     body: {
       whiteSpace: 'normal',
-      fontSize: 15,
+      fontSize: 14,
       // fontFamily: Typography.LatoBold,
-      lineHeight: 25,
+      lineHeight: 22,
       color: Colors.Black,
       fontWeight: 500
     },
@@ -171,5 +171,26 @@ export default styles = StyleSheet.create({
       marginVertical: 5,
       lineHeight: 20,
     }
+  },
+
+  //animaeted style
+  overlay: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    justifyContent: "center"
+  },
+  overlayTouchable: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  modal: {
+    right: 23, // Align to the right
+    position: "absolute",
+    backgroundColor: Colors.White,
+    borderRadius: 5,
+    paddingVertical: 8,
+    paddingHorizontal: 30
   },
 });

@@ -190,18 +190,16 @@ const BottomSheet = (props) => {
                     }
                 }}
             >
-                <View style={styles.rbSheetContainer}>
-                    <TouchableOpacity onPress={() => refRBSheet.current.close()}
-                        style={{ width: '100%', alignItems: 'flex-end' }} hitSlop={styles.hitSlop}>
-                        <Icon style={styles.croseIcon} source={ImagePath.Home.crossPink} />
-                    </TouchableOpacity>
-
-                    <Label style={styles.topTitle} text={Strings.Home.selectD} />
-                    <View style={{ marginTop: Size.xs3 }}>
-                        <Label style={styles.productTitle} text={Strings.Home.selectaProductAvailability} />
+                <View style={[styles.rbSheetContainer, { bottom: 25 }]}>
+                    <View style={styles.bottomSheetMainView}>
+                        <Label style={styles.topTitle} text={Strings.Home.selectD} />
+                        <TouchableOpacity onPress={() => refRBSheet.current.close()}
+                            hitSlop={styles.hitSlop}>
+                            <Icon style={styles.croseIcon} source={ImagePath.Other.closeCircleBlack} />
+                        </TouchableOpacity>
                     </View>
 
-                    <Spacer />
+                    <Spacer style={{ height: 20 }} />
 
                     <View style={styles.radioButtonContainer}>
                         {selectCountry?.map((countryName, key) => {
@@ -210,7 +208,7 @@ const BottomSheet = (props) => {
                                     <RowColumn
                                         onClick={() => { setChecked(key), setDeliveryData([]), setCityError(''), setSearchCtyOrCountry('') }}
                                         touchableStyle={[styles.radioButtonView]}
-                                        style={styles.radioIcon}
+                                        style={[styles.radioIcon, { tintColor: checked == key ? Colors.Camel : null }]}
                                         labelStyle2={styles.radioTitle}
                                         Image={checked == key ? ImagePath.Other.radioBlack : ImagePath.Other.unCheckRadioBtnWhite}
                                         label={countryName}
@@ -233,10 +231,11 @@ const BottomSheet = (props) => {
                         } />
                         <Icon style={styles.shapeIcon} source={ImagePath.Home.shape} />
                     </TouchableOpacity>
-                    <Label style={{ fontSize: 12, color: Colors.Red }} text={cityError} />
+                    <Label style={{ fontSize: 12, color: Colors.Red, paddingHorizontal: 20, }} text={cityError} />
                     <Spacer style={styles.spacer} />
+
                     <Button
-                        style={{ height: Size.x48, backgroundColor: Colors.Secondary.Black }}
+                        style={{ height: Size.x48, backgroundColor: Colors.Secondary.Black, marginHorizontal: 20, }}
                         onPress={() => setLocation()}
                         primaryButton
                         title={Strings.Home.continueShopping}
@@ -324,6 +323,15 @@ const BottomSheet = (props) => {
 export default memo(BottomSheet);
 
 const styles = StyleSheet.create({
+    bottomSheetMainView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 4,
+        backgroundColor: Colors.Black,
+        paddingVertical: 20,
+        paddingHorizontal: Size.m0,
+    },
     rowColumn: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -350,16 +358,17 @@ const styles = StyleSheet.create({
         width: Size.xxxl
     },
     croseIcon: {
-        width: Size.m1,
-        height: Size.m1
+        width: 23,
+        height: 23,
+        tintColor: Colors.White
     },
     rbSheetContainer: {
-        paddingHorizontal: Size.m0,
         bottom: Size.xm1,
     },
     topTitle: {
-        fontSize: Size.xl,
-        fontFamily: Typography.LatoBold
+        fontSize: 17,
+        fontFamily: Typography.LatoBold,
+        color: Colors.White
     },
     productTitle: {
         fontSize: Size.m0,
@@ -382,25 +391,39 @@ const styles = StyleSheet.create({
         width: '80%',
         justifyContent: 'space-between',
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingHorizontal: 20,
     },
     selectCountry: {
         borderWidth: 1,
-        borderColor: '#58585880',
+        borderColor: Colors.Camel,
         height: Size.x63,
         borderRadius: Size.xs1,
         paddingHorizontal: Size.xm1,
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
-        marginTop: Size.l
+        backgroundColor: Colors.White,
+        marginTop: 25,
+        marginHorizontal: 20,
+        shadowColor: Colors.Camel,
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.15,
+        shadowRadius: 5.46,
+        elevation: 5,
+        zIndex: 999
     },
     selectCountryTitle: {
-        fontSize: Size.m1
+        fontSize: Size.m1,
+        color: Colors.Gray,
+        fontSize: 15
     },
     shapeIcon: {
         width: Size.xs2,
-        height: Size.xm1 + 1
+        height: Size.xm1 + 1,
     },
     spacer: {
         marginTop: Size.xxl

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { SafeAreaView, View, TouchableOpacity, StyleSheet, FlatList, Dimensions, Text } from "react-native";
 import { Colors, ImagePath, Label, Size, Typography, Icon, Strings } from "../../constants";
 import { AlertError, Button, Loader, RowColumn, SocialButton, ToastSuccess } from "../../components";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { instance } from "../../utils";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutSucces, setCounrtyData } from "../../features";
@@ -129,8 +130,6 @@ export default DrawerMenu = ({ navigation }) => {
 	}
 
 	const gotoScreen = async (item) => {
-		console.log('item=====',item);
-		
 		if (item.url == '') {
 			return '';
 		}
@@ -172,7 +171,7 @@ export default DrawerMenu = ({ navigation }) => {
 		}
 		else if (item.url_type === "static") {
 			navigation.navigate("Detail", { "menu_url": item })
-		}else if(item?.url == "in/valentines-day"){
+		} else if (item?.url == "in/valentines-day") {
 			navigation.navigate("ValentineDay", { "menu_url": item })
 		}
 		setCat('');
@@ -304,15 +303,21 @@ export default DrawerMenu = ({ navigation }) => {
 				/>}
 
 			<View style={style.bottomContainer}>
-				<SocialButton source={ImagePath.Auth.fbSign} title={Strings.SignIn.signInWithFB} />
-				<SocialButton source={ImagePath.Auth.googleIcon} title={Strings.SignIn.signInWithGoogle} style={style.socialBtn} />
 				<Button
 					onPress={() => { !authData.data?.slug ? goToNav('Login') : logOut() }}
 					style={style.loginSignupButton}
 					labelStyle={style.loginSignupButtonLable}
 					title={!authData.data?.slug ? "Login" : "Logout"}
+					primaryIcon={ImagePath.Other.sign_in}
 					primaryButton
+					buttomIconStyle={{ width: 19, height: 19, tintColor: Colors.White }}
 				/>
+				<View style={[style.welcomemsg, { marginHorizontal: 22, marginVertical: 14 }]}>
+					<View style={style.signInBorder} />
+					<Label style={{ color: Colors.White, marginHorizontal: 5 }} text={'or sign in with'} />
+					<View style={style.signInBorder} />
+				</View>
+				<SocialButton />
 			</View>
 
 			{/* <View style={style.otherLink}>
@@ -369,15 +374,19 @@ const style = StyleSheet.create({
 		borderColor: Colors.Black,
 	},
 	loginSignupButtonLable: {
-		color: Colors.Secondary.Black,
+		color: Colors.White,
 		fontFamily: Typography.LatoMedium,
+		marginRight: 5,
+		fontSize: 16
 	},
 	loginSignupButton: {
 		marginHorizontal: Size.l,
-		paddingVertical: 10,
+		paddingVertical: 8,
 		height: null,
-		backgroundColor: Colors.White,
-		marginBottom: 15
+		backgroundColor: Colors.TiaMaria,
+		marginTop: 10,
+		flexDirection: 'row',
+		borderRadius: 0
 	},
 	profileIcon: {
 		alignItems: 'flex-start',
@@ -461,10 +470,16 @@ const style = StyleSheet.create({
 	},
 	bottomContainer: {
 		backgroundColor: Colors.Black,
-		width: '100%'
+		width: '100%',
+		paddingVertical: 15
 	},
 	socialBtn: {
 		marginTop: Size.m1,
 		marginBottom: Size.m1
 	},
+	signInBorder: {
+		flex: 1,
+		backgroundColor: Colors.White,
+		height: 1
+	}
 });

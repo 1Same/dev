@@ -1,18 +1,26 @@
 import React, { memo } from "react";
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
-import { Colors, Size, Typography, Icon, BoldLabel } from "../../constants";
+import { Colors, Size, Typography, Icon, BoldLabel, Strings, ImagePath } from "../../constants";
 
 
 const SocialButton = (props) => {
 
-    const { onPress, title, style, source } = props;
+    const { onPress } = props;
 
     return (
-        <TouchableOpacity onPress={onPress}
-            activeOpacity={0.6} style={[styles.socialLoginButton, style]}>
-            <Icon source={source} style={styles.fbSign} />
-            <BoldLabel boldStyle={styles.label} title={title} />
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <TouchableOpacity onPress={onPress}
+                activeOpacity={0.6} style={[styles.socialLoginButton, { backgroundColor: Colors.ForestGreen }]}>
+                <BoldLabel boldStyle={styles.label} title={Strings.Home.google} />
+                <Icon source={ImagePath.Auth.googleSign} style={styles.fbSign} />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={onPress}
+                activeOpacity={0.6} style={[styles.socialLoginButton, { backgroundColor: Colors.Minsk }]}>
+                <BoldLabel boldStyle={styles.label} title={Strings.Home.facebook} />
+                <Icon source={ImagePath.Auth.facebook_background} style={styles.fbSign} />
+            </TouchableOpacity>
+        </View>
     )
 }
 export default memo(SocialButton);
@@ -28,32 +36,26 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 16,
         fontFamily: Typography.LatoMedium,
-        color: Colors.Black,
+        color: Colors.White,
         alignSelf: "center",
-        marginLeft: 8
     },
     emtyView: {
-        // height: Size.x65,
         width: Size.x,
         marginLeft: Size.l,
         backgroundColor: "#70707070"
     },
     fbSign: {
-        height: Size.m011,
-        width: Size.m011,
+        height: 17,
+        width: 17,
+        marginLeft: 6,
+        tintColor: Colors.White
     },
     socialLoginButton: {
-        marginHorizontal: Size.l,
-        borderRadius: Size.xm,
-        marginTop: Size.xl,
         flexDirection: "row",
-        backgroundColor: Colors.White,
-        borderColor: Colors.Concord,
-        borderWidth: .5,
         alignItems: "center",
         justifyContent: 'center',
-        paddingVertical: 10,
-        // width: '65%'
+        paddingVertical: 8,
+        width: '43.8%'
     },
     buttonView: {
         backgroundColor: Colors.Primary.Camel,

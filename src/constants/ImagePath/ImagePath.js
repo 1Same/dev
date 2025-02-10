@@ -44,6 +44,7 @@ export default ImagePath = {
         rightMark: require(BaseImagePath + 'Auth/rightMark.png'),
         hidePassword: require(BaseImagePath + 'Auth/hidePassword.png'),
         openPassword: require(BaseImagePath + 'Auth/openPassword.png'),
+        facebook_background: require(BaseImagePath + 'Auth/facebook_background.png'),
     },
     Intro: {
         splash: require(BaseImagePath + 'Intro/splashLogo.png'),
@@ -149,6 +150,8 @@ export default ImagePath = {
         track_order_menu: require(BaseImagePath + 'Other/track_order_menu.png'),
         customer_service_icon: require(BaseImagePath + 'Other/customer_service_icon.png'),
         sort: require(BaseImagePath + 'Other/sort.png'),
+        arrow_left_header: require(BaseImagePath + 'Other/arrow-left_header.png'),
+        sign_in: require(BaseImagePath + 'Other/sign_in.png'),
     },
     webIcons: {
         left_arrowNew: require('../../assets/Images/WebpIcon/left-arrowNew.png'),

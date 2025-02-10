@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Colors, Typography, Label, Spacer, ImagePath, Icon, Strings } from "../../constants"
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
@@ -67,6 +67,7 @@ const ListProduct = (props) => {
                                     style={[styles.addonIcon, productImageStyle]} source={productImage} resizeMode="cover"
                                 />
                             }
+
                             {addonIcon && <View style={[styles.addonView, addonViewStyle]}>
                                 <Icon style={addonIconStyle} source={addonIcon} />
                             </View>}
@@ -154,7 +155,7 @@ export default memo(ListProduct)
 
 const styles = StyleSheet.create({
     addonContainer: {
-        marginTop: 30,
+        marginTop: 35,
         borderRadius: 8,
         padding: 5,
         alignItems: 'center',
